@@ -1,10 +1,8 @@
-﻿using System;
+﻿using Blog.Data;
+using Blog.Models;
+using PagedList.Core;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Blog.Data;
-using Blog.Models;
 
 namespace Blog.Repositories
 {
@@ -16,17 +14,20 @@ namespace Blog.Repositories
             _context = context;
         }
 
-        public void DeletePost(string postId)
+        public void DeletePost(Post post)
         {
-            Post post = GetPostById(postId);
-            if(post != null)
-                _context.Posts.Remove(post);
+            _context.Posts.Remove(post);
+            _context.SaveChanges();
         }
 
-        public IEnumerable<Post> GetAllPosts(string query)
-        { 
+        public IEnumerable<Post> GetAllPosts(string query, int pageNumber = 1, int pageSize = 10)
+        {
+            var whereQuery = _context.Posts.Where(p => p.Content.Contains(query) || p.Excerpt.Contains(query)|| p.Title.Contains(query));
+            PagedList<Post> posts = new PagedList<Post>(whereQuery, pageNumber, pageSize);
             //return _context.Posts.Where(p => string.Compare(p.Content,query,StringComparison.OrdinalIgnoreCase)>0);
-            return _context.Posts.Where(p => p.Content.Contains(query) || p.Excerpt.Contains(query));
+            //return _context.Posts.Where(p => p.Content.Contains(query) || p.Excerpt.Contains(query));
+
+            return posts;
         }
 
         public Post GetPostById(string postId)

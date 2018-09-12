@@ -11,9 +11,10 @@ using System;
 namespace Blog.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180911102233_comment-model")]
+    partial class commentmodel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -45,7 +46,7 @@ namespace Blog.Migrations
 
                     b.HasIndex("PostId");
 
-                    b.ToTable("Comments");
+                    b.ToTable("Comment");
                 });
 
             modelBuilder.Entity("Blog.Models.Post", b =>
@@ -78,11 +79,11 @@ namespace Blog.Migrations
 
             modelBuilder.Entity("Blog.Models.Comment", b =>
                 {
-                    b.HasOne("Blog.Models.Comment", "Comments")
+                    b.HasOne("Blog.Models.Comment", "Reply")
                         .WithMany()
                         .HasForeignKey("ParentId");
 
-                    b.HasOne("Blog.Models.Post", "Post")
+                    b.HasOne("Blog.Models.Post")
                         .WithMany("Comments")
                         .HasForeignKey("PostId");
                 });

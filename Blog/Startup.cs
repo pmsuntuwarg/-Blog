@@ -3,6 +3,7 @@ using Blog.Repositories;
 using Blog.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -25,9 +26,11 @@ namespace Blog
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"))
                 );
-
+            services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
             services.AddScoped<IPostService, PostService>();
             services.AddScoped<IPostRepository, PostRepository>();
+            services.AddScoped<ICommentService, CommentService>();
+            services.AddScoped<ICommentRepository, CommentRepository>();
             services.AddMvc();
         }
 

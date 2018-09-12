@@ -13,14 +13,14 @@ namespace Blog.Controllers
             _postService = postService;
         }
 
-        public ViewResult Index(string query)
+        public ViewResult Index(string query, int page = 1, int pageSize = 10)
         {
-
             if (query is null)
                 query = "";
-            //query = "soluta";
-            var posts = _postService.GetAllPosts(query);
+                
+            var posts = _postService.GetAllPosts(query, page, pageSize);
             ViewData["query"] = query;
+            ViewData["size"] = pageSize;
             return View(posts);
         }
 
@@ -43,18 +43,28 @@ namespace Blog.Controllers
             return View("Edit", post);
         }
 
-        public ViewResult Detail(string id)
+        public ActionResult Detail(string id)
         {
             var post = _postService.GetPostById(id);
+
+            if (post == null)
+                return NotFound("Post not found");
+            _postService.IncreaseViewCount(post);
 
             return View(post);
         }
 
         public ActionResult Delete(string id)
         {
-            _postService.DeletePost(id);
-
-            return null;
+            try
+            {
+                _postService.DeletePost(id);
+                return RedirectToAction("Index");
+            }
+            catch
+            {
+                return RedirectToAction("Detail", new { id });
+            }
         }
 
         public ActionResult Edit(string id)

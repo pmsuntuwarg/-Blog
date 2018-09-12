@@ -11,42 +11,15 @@ using System;
 namespace Blog.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180910062340_add-viewcount-in-post")]
+    partial class addviewcountinpost
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "2.0.3-rtm-10026")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-            modelBuilder.Entity("Blog.Models.Comment", b =>
-                {
-                    b.Property<string>("CommentId")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Author");
-
-                    b.Property<string>("Content");
-
-                    b.Property<bool>("IsReply");
-
-                    b.Property<string>("ParentId");
-
-                    b.Property<string>("PostId");
-
-                    b.Property<DateTime>("PublishedDate");
-
-                    b.Property<DateTime>("UpdatedDate");
-
-                    b.HasKey("CommentId");
-
-                    b.HasIndex("ParentId");
-
-                    b.HasIndex("PostId");
-
-                    b.ToTable("Comments");
-                });
 
             modelBuilder.Entity("Blog.Models.Post", b =>
                 {
@@ -74,17 +47,6 @@ namespace Blog.Migrations
                     b.HasKey("PostId");
 
                     b.ToTable("Posts");
-                });
-
-            modelBuilder.Entity("Blog.Models.Comment", b =>
-                {
-                    b.HasOne("Blog.Models.Comment", "Comments")
-                        .WithMany()
-                        .HasForeignKey("ParentId");
-
-                    b.HasOne("Blog.Models.Post", "Post")
-                        .WithMany("Comments")
-                        .HasForeignKey("PostId");
                 });
 #pragma warning restore 612, 618
         }

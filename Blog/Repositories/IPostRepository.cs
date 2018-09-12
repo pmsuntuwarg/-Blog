@@ -9,10 +9,10 @@ namespace Blog.Repositories
 {
     public interface IPostRepository
     {
-        IEnumerable<Post> GetAllPosts(string query);
+        IEnumerable<Post> GetAllPosts(string query, int pageNumber, int pageSize);
         Post GetPostById(string postId);
         void SavePost(Post post);
         void UpdatePost(Post post);
-        void DeletePost(string postId);
+        void DeletePost(Post post);
     }
 }

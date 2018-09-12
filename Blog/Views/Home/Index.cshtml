@@ -1,10 +1,10 @@
-﻿@model IEnumerable<Blog.Models.Post>
+﻿@model PagedList.Core.IPagedList<Blog.Models.Post>
 
 <div class="flexbox-b mb-5">
     <span class="mr-4 static-badge badge-pink"><i class="la la-pencil"></i></span>
     <div>
         <h5 class="font-strong">Blog</h5>
-        <div class="text-light">Found @Model.Count() posts</div>
+        <div class="text-light">Found @Model.TotalItemCount posts</div>
     </div>
     <div class="ml-4">
         <a asp-action="Create" class="btn btn-success">Create New Blog</a>
@@ -19,7 +19,7 @@
                name="query"
                type="text"
                placeholder="Search ..."
-               style="box-shadow:0 3px 6px rgba(10,16,20,.15);" required>
+               style="box-shadow:0 3px 6px rgba(10,16,20,.15);">
         <input type="button" value="" hidden />
     </div>
 </form>
@@ -61,4 +61,12 @@
             </div>
         </div>
     }
+</div>
+<div class="row mb-5">
+    <pager list="@Model"
+           asp-controller="Home"
+           asp-action="Index"
+           asp-route-query="@ViewData["query"]"
+           asp-route-pagesize="@ViewData["size"]"
+           class="col-md-12 text-center" />
 </div>

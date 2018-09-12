@@ -8,7 +8,7 @@ namespace Blog.Models
 {
     public class Post
     {
-        public string PostId { get; set; } = DateTime.UtcNow.Ticks.ToString();
+        public string PostId { get; set; } = Guid.NewGuid().ToString() + DateTime.UtcNow.Ticks.ToString();
         public string Title { get; set; }
         public string Slug { get; set; }
         public string Excerpt { get; set; }
@@ -17,5 +17,8 @@ namespace Blog.Models
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
         public DateTime PublishedAt { get; set; }
         public bool IsPublished { get; set; } = false;
+        public long ViewCount { get; set; }
+
+        public IEnumerable<Comment> Comments { get; set; }
     }
 }

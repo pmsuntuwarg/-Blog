@@ -20,17 +20,28 @@ namespace Blog.Services
 
         public void DeletePost(string postId)
         {
-            _postRepository.DeletePost(postId);
+            Post post = GetPostById(postId);
+
+            if (post != null)
+                _postRepository.DeletePost(post);
         }
 
-        public IEnumerable<Post> GetAllPosts(string query)
+        public IEnumerable<Post> GetAllPosts(string query, int pageNumber, int pageSize)
         {
-            return _postRepository.GetAllPosts(query);
+            var posts = _postRepository.GetAllPosts(query,pageNumber, pageSize);
+
+            return posts;
         }
 
         public Post GetPostById(string postId)
         {
             return _postRepository.GetPostById(postId);
+        }
+
+        public void IncreaseViewCount(Post post)
+        {
+            if (post.IsPublished)
+                post.ViewCount += 1;
         }
 
         public string SavePost(PostViewModel postViewModel, string action = "Create")
@@ -40,14 +51,22 @@ namespace Blog.Services
                 Post post = new Post();
 
                 if (action == "Edit")
+                {
                     post = _postRepository.GetPostById(postViewModel.Id);
+                    post.CreatedAt = post.CreatedAt;
+                }
+
+                if (post.Title != postViewModel.Title)
+                    post.Slug = CreateSlug(postViewModel.Title);
 
                 post.Title = postViewModel.Title;
                 post.Excerpt = postViewModel.Excerpt;
                 post.Content = postViewModel.Content;
 
                 if (action == "Create")
+                {
                     _postRepository.SavePost(post);
+                }
 
                 if (action == "Edit")
                     _postRepository.UpdatePost(post);
@@ -57,6 +76,12 @@ namespace Blog.Services
             {
                 return e.Message;
             }
+        }
+
+        private string CreateSlug(string title)
+        {
+            var slug = title.ToLowerInvariant().Replace(" ", "-");
+            return slug;
         }
     }
 }
