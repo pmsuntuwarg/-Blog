@@ -1,0 +1,43 @@
+﻿
+<li class="dropdown dropdown-user">
+    <a class="nav-link dropdown-toggle link" data-toggle="dropdown">
+        <div class="admin-avatar">
+            <img src="/assets/img/users/admin-image.png" alt="image" />
+        </div>
+        <span>Super User</span>
+    </a>
+    <div class="dropdown-menu dropdown-arrow dropdown-menu-right admin-dropdown-menu">
+        <div class="dropdown-arrow"></div>
+        <div class="dropdown-header">
+            <div class="admin-avatar">
+                <img src="/assets/img/users/admin-image.png" alt="image" />
+            </div>
+            <div>
+                <h5 class="font-strong text-white">Super User</h5>
+                <div>
+                    <span class="admin-badge mr-3"><i class="ti-alarm-clock mr-2"></i>30m.</span>
+                    <span class="admin-badge"><i class="ti-lock mr-2"></i>Safe Mode</span>
+                </div>
+            </div>
+        </div>
+        <div class="admin-menu-features">
+            <a class="admin-features-item" href="javascript:;">
+                <i class="ti-user"></i>
+                <span>PROFILE</span>
+            </a>
+            <a class="admin-features-item" href="javascript:;">
+                <i class="ti-support"></i>
+                <span>SUPPORT</span>
+            </a>
+            <a class="admin-features-item" href="javascript:;">
+                <i class="ti-settings"></i>
+                <span>SETTINGS</span>
+            </a>
+        </div>
+        <div class="admin-menu-content">
+            <div class="d-flex justify-content-between mt-2">
+                <a asp-controller="Account" asp-action="logout" class="d-flex align-items-center">Logout<i class="ti-shift-right ml-2 font-20"></i></a>
+            </div>
+        </div>
+    </div>
+</li>

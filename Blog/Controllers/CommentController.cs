@@ -23,15 +23,14 @@ namespace Blog.Controllers
         {
 
             var isSaved = _commentService.SaveComment(commentViewModel);
-            return null;
 
-            //if(isSaved)
-            //{
-            //    return RedirectToAction("Detail/"+commentViewModel.PostId, "Home");
-            //}
+            if (isSaved)
+            {
+                return RedirectToAction("Detail", "Home", new { id = commentViewModel.PostId });
+            }
 
-            //return RedirectToRoute("Detail", "Home", (string) commentViewModel.PostId, commentViewModel);
-            //return RedirectToRoute("Detail", "Home", (string) commentViewModel.PostId);
+            ViewBag.Comment = commentViewModel.Content;
+            return View("Detail", "Home");
         }
     }
 }
