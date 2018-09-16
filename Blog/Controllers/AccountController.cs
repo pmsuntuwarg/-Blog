@@ -1,10 +1,7 @@
-﻿using Blog.ViewModels.Account;
+﻿using Blog.Models.Identity;
+using Blog.ViewModels.Account;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Blog.Controllers
@@ -40,7 +37,7 @@ namespace Blog.Controllers
                     return RedirectToAction("Index", "Home");
             }
 
-            ModelState.AddModelError("", "Username/Password combination not found");
+            ModelState.AddModelError("NotFound", "Username/Password combination not found");
 
             return View(loginViewModel);
         }
