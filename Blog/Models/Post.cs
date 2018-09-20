@@ -20,5 +20,6 @@ namespace Blog.Models
         public long ViewCount { get; set; }
 
         public IEnumerable<Comment> Comments { get; set; }
+        public List<PostTag> PostTags { get; set; } = new List<PostTag>();
     }
 }

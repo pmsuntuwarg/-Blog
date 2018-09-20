@@ -1,4 +1,5 @@
 ﻿using Blog.Models;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,5 +15,6 @@ namespace Blog.Repositories
         void SavePost(Post post);
         void UpdatePost(Post post);
         void DeletePost(Post post);
+        IEnumerable<Tag> GetAllTags();
     }
 }

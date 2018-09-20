@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Blog.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,5 +13,6 @@ namespace Blog.ViewModels
         public string Title { get; set; }
         public string Excerpt { get; set; }
         public string Content { get; set; }
+        public List<string> PostTags { get; set; }
     }
 }

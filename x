@@ -1,0 +1,22 @@
+********* ********
+
+*** [x] login register changes
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+#
+# On branch master
+# Changes to be committed:
+#	modified:   Blog/Controllers/AccountController.cs
+#	new file:   Blog/Models/Identity/Role.cs
+#	modified:   Blog/ViewComponents/LoginStatusViewComponent.cs
+#	modified:   Blog/ViewModels/Account/LoginViewModel.cs
+#	modified:   Blog/Views/Account/Login.cshtml
+#	modified:   Blog/Views/Account/Register.cshtml
+#
+# Changes not staged for commit:
+#	modified:   Blog/bin/Debug/netcoreapp2.0/Blog.dll
+#	modified:   Blog/bin/Debug/netcoreapp2.0/Blog.pdb
+#	modified:   Blog/obj/Debug/netcoreapp2.0/Blog.csproj.CoreCompileInputs.cache
+#	modified:   Blog/obj/Debug/netcoreapp2.0/Blog.dll
+#	modified:   Blog/obj/Debug/netcoreapp2.0/Blog.pdb
+#

@@ -1,5 +1,6 @@
 ﻿using Blog.Data;
 using Blog.Models;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using PagedList.Core;
 using System.Collections.Generic;
@@ -33,7 +34,16 @@ namespace Blog.Repositories
 
         public Post GetPostById(string postId)
         {
-            return _context.Posts.Include(p => p.Comments).FirstOrDefault(p => p.PostId == postId);
+            return _context.Posts
+                .Include(p => p.Comments)
+                .Include(p => p.PostTags)
+                .ThenInclude(pt => pt.Tags)
+                .FirstOrDefault(p => p.PostId == postId);
+        }
+
+        public IEnumerable<Tag> GetAllTags()
+        {
+            return _context.Tags;
         }
 
         public void SavePost(Post post)

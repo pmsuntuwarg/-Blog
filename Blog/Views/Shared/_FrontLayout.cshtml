@@ -29,33 +29,12 @@
             <!-- START TOP-LEFT TOOLBAR-->
             <ul class="nav navbar-toolbar">
                 <li>
-                    <a class="nav-link sidebar-toggler js-sidebar-toggler" href="javascript:;">
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </a>
+                    <a asp-controller="blog">Blog</a>
                 </li>
             </ul>
             <!-- END TOP-LEFT TOOLBAR-->
-            <!-- START TOP-RIGHT TOOLBAR-->
-            <ul class="nav navbar-toolbar">
-              @await Component.InvokeAsync("LoginStatus")
-            </ul>
-            <!-- END TOP-RIGHT TOOLBAR-->
         </header>
         <!-- END HEADER-->
-        <!-- START SIDEBAR-->
-        <nav class="page-sidebar">
-            <ul class="side-menu metismenu scroller">
-                <li>
-                    <a asp-controller="Home" asp-action="Index">
-                        <i class="sidebar-item-icon ti-control-forward"></i>
-                        <span class="nav-label">Blogs</span>
-                    </a>
-                </li>
-            </ul>
-        </nav>
-        <!-- END SIDEBAR-->
         <div class="content-wrapper">
             <!-- START PAGE CONTENT-->
             <div class="page-content fade-in-up">

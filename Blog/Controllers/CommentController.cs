@@ -26,7 +26,7 @@ namespace Blog.Controllers
 
             if (isSaved)
             {
-                return RedirectToAction("Detail", "Home", new { id = commentViewModel.PostId });
+                return RedirectToAction("Detail", "Blog", new { id = commentViewModel.PostId });
             }
 
             ViewBag.Comment = commentViewModel.Content;

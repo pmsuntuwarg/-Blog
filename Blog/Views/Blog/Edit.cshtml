@@ -1,16 +1,19 @@
 ﻿@model Blog.ViewModels.PostViewModel
 
+@section CSS {
+    <link href="~/assets/vendors/select2/dist/css/select2.min.css" rel="stylesheet" />
+}
+
 <div class="page-heading">
     <h1 class="page-title">New Blog</h1>
     <ol class="breadcrumb">
         <li class="breadcrumb-item">
             <a asp-action="Index">Home</a>
         </li>
-        @if(Model != null && Model.Id != null)
+        @if (Model != null && Model.Id != null)
         {
             <li class="breadcrumb-item"> <a asp-action="Edit">Edit</a> </li>
-        }
-        else
+        } else
         {
             <li class="breadcrumb-item"> <a asp-action="Create">Create</a> </li>
         }
@@ -40,7 +43,14 @@
                 <div class="form-group row">
                     <label asp-for="Content" class="col-sm-2 col-form-label"></label>
                     <div class="col-sm-10">
-                        <textarea asp-for="Content" id="summernote" data-plugin="summernote" class="form-control" data-air-mode="true"></textarea>
+                        <textarea asp-for="Content" data-plugin="summernote" class="form-control summernote" data-air-mode="true"></textarea>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="PostTags" class="col-sm-2 col-form-label"></label>
+                    <div class="col-sm-10">
+                        <select asp-for="PostTags" asp-items="ViewBag.Tags" class="form-control select2-tag" multiple="">
+                        </select>
                     </div>
                 </div>
 
@@ -53,3 +63,6 @@
         </div>
     </div>
 </div>
+@section JS {
+    <link href="~/assets/vendors/select2/dist/js/select2.full.min.js" rel="stylesheet" />
+}
