@@ -24,7 +24,8 @@ namespace Blog.Repositories
 
         public IEnumerable<Post> GetAllPosts(string query, int pageNumber = 1, int pageSize = 10)
         {
-            var whereQuery = _context.Posts.Where(p => p.Content.Contains(query) || p.Excerpt.Contains(query)|| p.Title.Contains(query));
+            var whereQuery = _context.Posts.Where(p => p.Content.Contains(query) || p.Excerpt.Contains(query)|| p.Title.Contains(query))
+                .Include(p => p.Category);
             PagedList<Post> posts = new PagedList<Post>(whereQuery, pageNumber, pageSize);
             //return _context.Posts.Where(p => string.Compare(p.Content,query,StringComparison.OrdinalIgnoreCase)>0);
             //return _context.Posts.Where(p => p.Content.Contains(query) || p.Excerpt.Contains(query));
@@ -36,6 +37,7 @@ namespace Blog.Repositories
         {
             return _context.Posts
                 .Include(p => p.Comments)
+                .Include( p => p.Category)
                 .Include(p => p.PostTags)
                 .ThenInclude(pt => pt.Tags)
                 .FirstOrDefault(p => p.PostId == postId);
@@ -56,6 +58,11 @@ namespace Blog.Repositories
         {
             _context.Posts.Update(updatedPost);
             _context.SaveChanges();
+        }
+
+        public void DeleteTagsByPostId(IEnumerable<PostTag> postTags)
+        {
+            
         }
     }
 }

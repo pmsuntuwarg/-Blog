@@ -16,5 +16,6 @@ namespace Blog.Repositories
         void UpdatePost(Post post);
         void DeletePost(Post post);
         IEnumerable<Tag> GetAllTags();
+        void DeleteTagsByPost(IEnumerable<PostTag> postTags);
     }
 }

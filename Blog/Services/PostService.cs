@@ -66,7 +66,7 @@ namespace Blog.Services
                             Selected = tag.TagId == selectedTag.TagId
                         };
                         if (tag.TagId == selectedTag.TagId)
-                            break;
+                            break ;
                     }
 
                     if(newItem !=null)
@@ -105,6 +105,7 @@ namespace Blog.Services
                 post.Title = postViewModel.Title;
                 post.Excerpt = postViewModel.Excerpt;
                 post.Content = postViewModel.Content;
+                post.CategoryId = postViewModel.Category;
 
                 foreach (var tagId in postViewModel.PostTags)
                 {

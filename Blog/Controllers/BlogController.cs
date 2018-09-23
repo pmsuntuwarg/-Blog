@@ -11,9 +11,11 @@ namespace Blog.Controllers
     public class BlogController : Controller
     {
         private readonly IPostService _postService;
-        public BlogController(IPostService postService)
+        private readonly ICategoryService _categoryService;
+        public BlogController(IPostService postService, ICategoryService categoryService)
         {
             _postService = postService;
+            _categoryService = categoryService;
         }
 
         [AllowAnonymous]
@@ -21,7 +23,7 @@ namespace Blog.Controllers
         {
             if (query is null)
                 query = "";
-                
+
             var posts = _postService.GetAllPosts(query, page, pageSize);
             ViewData["query"] = query;
             ViewData["size"] = pageSize;
@@ -30,8 +32,8 @@ namespace Blog.Controllers
 
         public ViewResult Create()
         {
-
             ViewBag.Tags = _postService.GetSelectListItemsForTags();
+            ViewBag.Categories = _categoryService.GetSelectListItemsForCategory();
             ViewData["Action"] = "Create";
 
             return View("Edit");
@@ -40,7 +42,7 @@ namespace Blog.Controllers
         [HttpPost]
         public ActionResult Create(PostViewModel post)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 _postService.SavePost(post);
                 return RedirectToAction("Index");
@@ -67,8 +69,7 @@ namespace Blog.Controllers
             {
                 _postService.DeletePost(id);
                 return RedirectToAction("Index");
-            }
-            catch
+            } catch
             {
                 return RedirectToAction("Detail", new { id });
             }
@@ -85,10 +86,11 @@ namespace Blog.Controllers
             postViewModel.Title = post.Title;
             postViewModel.Excerpt = post.Excerpt;
             postViewModel.Content = post.Content;
-            //postViewModel.PostTags = post.PostTags;
 
             ViewBag.Tags = _postService.GetSelectListItemsForTags(post.PostTags);
-                return View(postViewModel);
+            ViewBag.Categories = _categoryService.GetSelectListItemsForCategory(post.Category);
+
+            return View(postViewModel);
         }
 
         [HttpPost]
@@ -98,7 +100,7 @@ namespace Blog.Controllers
             {
                 _postService.SavePost(post, "Edit");
 
-                return RedirectToAction("Detail", new { id = post.Id } );
+                return RedirectToAction("Detail", new { id = post.Id });
             }
 
             return View(post);

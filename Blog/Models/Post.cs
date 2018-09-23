@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Blog.Models
 {
@@ -18,6 +16,10 @@ namespace Blog.Models
         public DateTime PublishedAt { get; set; }
         public bool IsPublished { get; set; } = false;
         public long ViewCount { get; set; }
+        public string CategoryId { get; set; }
+
+        [ForeignKey("CategoryId")]
+        public Category Category { get; set; }
 
         public IEnumerable<Comment> Comments { get; set; }
         public List<PostTag> PostTags { get; set; } = new List<PostTag>();

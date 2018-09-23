@@ -14,5 +14,6 @@ namespace Blog.ViewModels
         public string Excerpt { get; set; }
         public string Content { get; set; }
         public List<string> PostTags { get; set; }
+        public string Category { get; set; }
     }
 }

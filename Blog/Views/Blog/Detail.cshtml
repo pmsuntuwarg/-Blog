@@ -1,6 +1,6 @@
 ﻿@model Blog.Models.Post
 
-
+@Model.Category?.CategoryName
 <div class="row">
     <div class="col-lg-12 centered">
         <div class="ibox">
@@ -35,45 +35,48 @@
                     <div>
                         @foreach (var tag in Model.PostTags)
                         {
-                            <span class="badge badge-primary mr-2">@tag.Tags.TagName</span>
+                            <span class="badge badge-primary mr-2">
+                                <i class=" fa fa-tag"></i>
+                                @tag.Tags.TagName
+                            </span>
                         }
                     </div>
                     <span>@Model.ViewCount views</span>
                 </div>
                 <hr class="my-4">
-                
-                <h5 class="font-strong mb-3">
-                        <i class="fa fa-comment-o mr-2"></i> @Model.Comments.Count() Comments
-                    </h5>
-                    <ul class="media-list">
-                        @foreach (var comment in Model.Comments.OrderByDescending(c => c.PublishedDate))
-                        {
 
-                            <li class="media">
-                                <a class="media-img" href="javascript:;">
-                                    <img src="/assets/img/users/u10.jpg" alt="image" width="45" />
-                                </a>
-                                <div class="media-body">
-                                    <div class="media-heading">
-                                        <a class="comment-author" href="javascript:;">@comment.Author</a>
-                                        @* todo epoch time *@
-                                        <small class="text-muted ml-2">@(DateTime.UtcNow.ToLocalTime() - comment.PublishedDate.ToLocalTime())</small>
-                                        <div class="pull-right font-13">
-                                            <a class="text-muted mr-2" data-toggle="tooltip" data-original-title="Like">
-                                                <i class="fa fa-heart"></i>
-                                            </a>
-                                            <a class="text-muted" data-toggle="tooltip" data-original-title="Reply">
-                                                <i class="fa fa-reply"></i>
-                                            </a>
-                                        </div>
+                <h5 class="font-strong mb-3">
+                    <i class="fa fa-comment-o mr-2"></i> @Model.Comments.Count() Comments
+                </h5>
+                <ul class="media-list">
+                    @foreach (var comment in Model.Comments.OrderByDescending(c => c.PublishedDate))
+                    {
+
+                        <li class="media">
+                            <a class="media-img" href="javascript:;">
+                                <img src="/assets/img/users/u10.jpg" alt="image" width="45" />
+                            </a>
+                            <div class="media-body">
+                                <div class="media-heading">
+                                    <a class="comment-author" href="javascript:;">@comment.Author</a>
+                                    @* todo epoch time *@
+                                    <small class="text-muted ml-2">@(DateTime.UtcNow.ToLocalTime() - comment.PublishedDate.ToLocalTime())</small>
+                                    <div class="pull-right font-13">
+                                        <a class="text-muted mr-2" data-toggle="tooltip" data-original-title="Like">
+                                            <i class="fa fa-heart"></i>
+                                        </a>
+                                        <a class="text-muted" data-toggle="tooltip" data-original-title="Reply">
+                                            <i class="fa fa-reply"></i>
+                                        </a>
                                     </div>
-                                    <p class="m-0">
-                                        @comment.Content
-                                    </p>
                                 </div>
-                            </li>
-                        }
-                    </ul>
+                                <p class="m-0">
+                                    @comment.Content
+                                </p>
+                            </div>
+                        </li>
+                    }
+                </ul>
                 <h5 class="font-strong mt-4 mb-3">Leave A Comment</h5>
                 @Html.Partial("Comment/_CommentFormPartialView", new Blog.ViewModels.CommentViewModel { PostId = Model.PostId, Content = ViewBag.Comment })
             </div>

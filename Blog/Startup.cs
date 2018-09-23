@@ -34,6 +34,8 @@ namespace Blog
             services.AddScoped<IPostRepository, PostRepository>();
             services.AddScoped<ICommentService, CommentService>();
             services.AddScoped<ICommentRepository, CommentRepository>();
+            services.AddScoped<ICategoryService, CategoryService>();
+            services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddMvc();
         }
 
