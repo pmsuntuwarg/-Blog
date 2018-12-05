@@ -1,0 +1,201 @@
+﻿@model PagedList.Core.IPagedList<Blog.Areas.Admin.Models.Post>
+
+@*<div class="ibox">
+    <div class="ibox-body">
+        <h5 class="font-strong mb-4"></h5>
+        <div class="flexbox mb-4">
+            <div class="flexbox">
+                <span class="mr-4 static-badge badge-pink"><i class="la la-pencil"></i></span>
+                <div>
+                    <h5 class="font-strong">Blog</h5>
+                    <div class="text-light">Found @Model.TotalItemCount posts</div>
+                </div>
+                <div class="ml-4">
+                    <a asp-action="Create" class="btn btn-success">Add Posts</a>
+                </div>
+            </div>
+            <div class="input-group-icon input-group-icon-left mr-3">
+
+                <form asp-action="Index" method="get">
+                    <span class="input-icon input-icon-right font-16"><i class="ti-search"></i></span>
+                    <input class="form-control form-control-rounded form-control-solid"
+                           id="key-search"
+                           value="@ViewData["query"]"
+                           name="query"
+                           type="text"
+                           placeholder="Search ...">
+                    <input type="submit" value="" hidden />
+                </form>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover" id="datatable">
+                <thead class="thead-default thead-lg">
+                    <tr>
+                        <th>Title</th>
+                        <th>Excerpt</th>
+                        <th>Content</th>
+                        <th>Slug</th>
+                        <th>Category</th>
+                        <th>Tags</th>
+                        <th>Created At</th>
+                        <th>Updated At</th>
+                        <th>Comments</th>
+                        <th class="no-sort"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model?.Count() > 0)
+                    {
+                        @foreach (var post in Model)
+                        {
+                            <tr>
+                                <td>
+                                    <a asp-action="Detail" asp-route-id="@post.PostId" class="bold">
+                                        @post.Title
+                                    </a>
+                                </td>
+                                <td>
+                                    @post.Excerpt
+                                </td>
+                                <td>
+                                    @post.Content
+                                </td>
+                                <td>
+                                    @post.Slug
+                                </td>
+                                <td>
+                                    @(post.Category?.CategoryName ?? "Uncategorized")
+                                </td>
+                                <td>
+                                    @foreach (var postTag in post.PostTags)
+                                    {
+                                        <span>@postTag?.Tags?.TagName</span>
+                                    }
+                                </td>
+                                <td>
+                                    @post.CreatedAt
+                                </td>
+                                <td>
+                                    @post.UpdatedAt
+                                </td>
+                                <td>
+                                    @post.Comments?.Count()
+                                </td>
+
+                                <td>
+                                    <a class="btn btn-info" asp-action="Edit" asp-route-id="@post.PostId">
+                                        <i class="la la-pencil"></i>
+                                        <span>
+                                            Edit
+                                        </span>
+                                    </a>
+                                    <a class="btn btn-danger" href="javascript:;" data-toggle="modal" data-target="#delete-category-modal">
+                                        <i class="ti-trash"></i>
+                                        <span>
+                                            Delete
+                                        </span>
+                                    </a>
+                                    @Html.Partial("_DeletePostModalPartial", new Blog.Areas.Admin.ViewModels.PostViewModel { Id = post.PostId, Title = post.Title })
+                                </td>
+                            </tr>
+                        }
+
+                    } else
+                    {
+                        <tr>
+                            <td>
+                                No Posts
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="row right">
+            <pager list="@Model"
+                   asp-controller="Blog"
+                   asp-action="Index"
+                   asp-route-query="@ViewData["query"]"
+                   asp-route-pagesize="@ViewData["size"]"
+                   class="col-md-12 text-center" />
+        </div>
+    </div>
+
+</div>*@
+
+<div class="flexbox-b mb-5">
+        <span class="mr-4 static-badge badge-pink"><i class="la la-pencil"></i></span>
+        <div>
+            <h5 class="font-strong">Blog</h5>
+            <div class="text-light">Found @Model.TotalItemCount posts</div>
+        </div>
+        <div class="ml-4">
+            <a asp-action="Create" class="btn btn-success">Create New Blog</a>
+        </div>
+    </div>
+    <form asp-action="Index" method="get">
+        <div class="input-group-icon input-group-icon-left input-group-lg mb-5">
+            <span class="input-icon input-icon-right"><i class="ti-search"></i></span>
+
+            <input class="form-control form-control-air border-0 font-light font-poppins"
+                   value="@ViewData["query"]"
+                   name="query"
+                   type="text"
+                   placeholder="Search ..."
+                   style="box-shadow:0 3px 6px rgba(10,16,20,.15);">
+            <input type="button" value="" hidden />
+        </div>
+    </form>
+    <div class="row mb-5">
+        @foreach (var post in Model)
+        {
+            <div class="col-md-4">
+                <div class="card mb-4">
+                    <div class="rel">
+                        <img class="card-img-top" src="/assets/img/blog/06.jpg" alt="image" />
+                        <div class="card-img-overlay text-white">
+                            <span class="badge badge-success mb-5">@(post.Category?.CategoryName ?? "Uncategorized")</span>
+                            <div class="card-title-bottom color-white mb-2">
+                                <h4 class="card-title mb-2">
+                                    <a asp-action="Detail" asp-route-id="@post.PostId">@post.Title</a>
+                                </h4>
+                                <div>
+                                    @post.CreatedAt.ToShortDateString()
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <p class="text-light">
+                            @post.Excerpt
+                        </p>
+
+                        <div class="d-flex align-items-center justify-content-between mb-4">
+                            <div class="d-inline-flex align-items-center">
+                                <img class="img-circle mr-3" src="/assets/img/users/u11.jpg" alt="image" width="40" />
+                                <div>
+                                    <h6 class="text-success m-0">Tyrone Carroll</h6><small class="text-muted">Web Designer</small>
+                                </div>
+                            </div>
+                            <div class="d-inline-flex">
+                                <span class="text-muted pl-3 pr-3 text-center" style="border-right:1px solid rgba(0,0,0,.1);"><i class="fa fa-heart-o d-block font-16 mb-2"></i>124</span>
+                                <span class="text-muted pl-3 pr-3 text-center">
+                                    <i class="fa fa-comment-o d-block font-16 mb-2"></i>
+                                    @post.Comments?.Count()
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+    <div class="row mb-5">
+        <pager list="@Model"
+               asp-controller="Blog"
+               asp-action="Index"
+               asp-route-query="@ViewData["query"]"
+               asp-route-pagesize="@ViewData["size"]"
+               class="col-md-12 text-center" />
+    </div>

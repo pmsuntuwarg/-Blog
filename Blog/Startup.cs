@@ -1,6 +1,9 @@
-﻿using Blog.Data;
-using Blog.Repositories;
-using Blog.Services;
+﻿using Blog.Areas.Admin.Repositories;
+using Blog.Areas.Admin.Services;
+using Blog.Data;
+using FrontServices = Blog.Services;
+using FrontRepo = Blog.Repositories;
+using Blog.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -36,6 +39,14 @@ namespace Blog
             services.AddScoped<ICommentRepository, CommentRepository>();
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
+            services.AddScoped<ITagService, TagService>();
+            services.AddScoped<ITagRepository, TagRepository>();
+            services.AddScoped<IPageRepository, PageRepository>();
+            services.AddScoped<IPageService, PageService>();
+
+            services.AddScoped<FrontServices.IPageService, FrontServices.PageService>();
+            services.AddScoped<FrontRepo.IPageRepository, FrontRepo.PageRepository>();
+
             services.AddMvc();
         }
 
@@ -50,7 +61,7 @@ namespace Blog
             app.UseStatusCodePages();
             app.UseStaticFiles();
             app.UseAuthentication();
-            app.UseMvcWithDefaultRoute();
+            app.UseMvcWithCustomizedRoute();
         }
     }
 }

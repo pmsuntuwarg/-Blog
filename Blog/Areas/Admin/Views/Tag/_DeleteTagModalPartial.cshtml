@@ -1,0 +1,20 @@
+﻿@model Blog.Areas.Admin.Models.Tag
+
+<div class="modal fade" id="delete-tag-modal-@Model.TagId">
+    <div class="modal-dialog" style="width:400px;" role="document">
+        <div class="modal-content timeout-modal">
+            <div class="modal-body">
+                <button class="close" data-dismiss="modal" aria-label="Close"></button>
+                <div class="text-center h3 mb-3">@Model.TagName</div>
+                <form asp-controller="Tag" asp-action="Delete" method="post">
+                    <div id="timeout-activate-box">
+                        <div class="text-center">
+                            <input asp-for="TagId" hidden />
+                            <button type="submit" class="btn btn-primary btn-fix btn-air">Delete</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

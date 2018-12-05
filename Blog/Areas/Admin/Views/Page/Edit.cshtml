@@ -1,0 +1,66 @@
+﻿@model PageViewModel
+
+<div class="page-heading">
+    <h1 class="page-title">New Blog</h1>
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a asp-action="Index">Category</a>
+        </li>
+        @if (Model != null && Model.PageId != null)
+        {
+            <li class="breadcrumb-item"> <a asp-action="Edit">Edit</a> </li>
+        } else
+        {
+            <li class="breadcrumb-item"> <a asp-action="Create">Create</a> </li>
+        }
+    </ol>
+</div>
+<div class="page-content fade-in-up">
+    <div class="ibox">
+        <div class="ibox-body">
+            <form asp-action="@ViewBag.Action" class="form-horizontal" method="post" novalidate="novalidate">
+                @if (Model != null && Model.PageId != null)
+                {
+                    <input asp-for="PageId" hidden/>
+                }
+
+                <div class="form-group row @(ViewData.ModelState["PageName"] != null? "has-error" : "")">
+                    <label asp-for="PageName" class="col-sm-2 col-form-label"></label>
+                    <div class="col-sm-10">
+                        <input class="form-control" asp-for="PageName" />
+                        <span asp-validation-for="PageName" class="help-block"></span>
+                    </div>
+                </div>
+                 <div class="form-group row @(ViewData.ModelState["Title"] != null? "has-error" : "")">
+                    <label asp-for="Title" class="col-sm-2 col-form-label"></label>
+                    <div class="col-sm-10">
+                        <input class="form-control" asp-for="Title" />
+                        <span asp-validation-for="Title" class="help-block"></span>
+                    </div>
+                </div>
+                 <div class="form-group row @(ViewData.ModelState["Body"] != null? "has-error" : "")">
+                    <label asp-for="Body" class="col-sm-2 col-form-label"></label>
+                    <div class="col-sm-10">
+                        <textarea asp-for="Body" data-plugin="summernote" class="form-control summernote" data-air-mode="true"></textarea>
+                        <span asp-validation-for="Body" class="help-block"></span>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-sm-10 ml-sm-auto">
+                        <button class="btn btn-primary" type="submit">Save</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@if(ViewData.ModelState.IsValid)
+{
+
+}
+
+@section JS {
+    <link href="~/assets/vendors/select2/dist/js/select2.full.min.js" rel="stylesheet" />
+}

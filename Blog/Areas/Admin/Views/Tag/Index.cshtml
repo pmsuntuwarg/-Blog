@@ -1,0 +1,69 @@
+﻿@model IEnumerable<Blog.Areas.Admin.Models.Tag>
+
+<div class="ibox">
+    <div class="ibox-body">
+        <h5 class="font-strong mb-4"></h5>
+        <div class="flexbox mb-4">
+            <div class="flexbox">
+                <span class="mr-4 static-badge badge-pink"><i class="la la-pencil"></i></span>
+                <div>
+                    <h5 class="font-strong">Tag</h5>
+                    <div class="text-light">Found @Model.Count() tags</div>
+                </div>
+                <div class="ml-4">
+                    <a asp-action="Create" class="btn btn-success">Add Tag</a>
+                </div>
+            </div>
+            <div class="input-group-icon input-group-icon-left mr-3">
+                <span class="input-icon input-icon-right font-16"><i class="ti-search"></i></span>
+                <input class="form-control form-control-rounded form-control-solid" id="key-search" type="text" placeholder="Search ...">
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover" id="datatable">
+                <thead class="thead-default thead-lg">
+                    <tr>
+                        <th>Tag Name</th>
+                        <th class="no-sort"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model?.Count() > 0)
+                    {
+                        @foreach (var tag in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @tag.TagName
+                                </td>
+                                <td>
+                                    <a class="btn btn-info" asp-action="Edit" asp-route-id="@tag.TagId">
+                                        <i class="la la-pencil"></i>
+                                        <span>
+                                            Edit
+                                        </span>
+                                    </a>
+                                    <a class="btn btn-danger" href="javascript:;" data-toggle="modal" data-target="#delete-tag-modal-@tag.TagId">
+                                        <i class="ti-trash"></i>
+                                        <span>
+                                            Delete
+                                        </span>
+                                    </a>
+                                    @Html.Partial("_DeleteTagModalPartial", tag)
+                                </td>
+                            </tr>
+                        }
+
+                    } else
+                    {
+                        <tr>
+                            <td>
+                                No Categories
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

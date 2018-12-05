@@ -1,0 +1,92 @@
+﻿@{
+    Layout = "_AuthLayout";
+}
+
+@section CSS {
+    <style>
+        body {
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-image: url("~/assets/img/blog/17.jpg");
+        }
+
+        .cover {
+            position: absolute;
+            bottom: 0;
+            top: 0;
+            left: 0;
+            right: 0;
+            background-color: rgba(117, 54, 230, .1);
+        }
+
+        .login-content {
+            max-width: 400px;
+            margin: 100px auto auto;
+        }
+
+        .auth-head-icon {
+            position: relative;
+            height: 60px;
+            width: 60px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            background-color: #fff;
+            color: #5c6bc0;
+            box-shadow: 0 5px 20px #d6dee4;
+            border-radius: 50%;
+            transform: translateY(-50%);
+            z-index: 2;
+        }
+    </style>
+}
+
+@model Blog.Areas.Admin.ViewModels.Account.RegisterViewModel
+
+<form class="ibox-body" id="register-form" asp-action="register" method="POST">
+    <h4 class="font-strong text-center mb-5">Register</h4>
+    <div class="form-group mb-4 @(ViewData.ModelState["Username"] != null ? "has-error" : "")">
+        <input asp-for="Username"
+               class="form-control form-control-line"
+               placeholder="User Name">
+        <span asp-validation-for="Username" class="help-block"></span>
+    </div>
+    <div class="form-group mb-4 @(ViewData.ModelState["FirstName"] != null ? "has-error" : "")">
+        <input asp-for="FirstName"
+               class="form-control form-control-line"
+               placeholder="First Name">
+        <span asp-validation-for="FirstName" class="help-block"></span>
+    </div>
+    <div class="form-group mb-4 @(ViewData.ModelState["LastName"] != null ? "has-error" : "")">
+        <input asp-for="LastName"
+               class="form-control form-control-line"
+               placeholder="Last Name">
+        <span asp-validation-for="LastName" class="help-block"></span>
+    </div>
+    <div class="form-group mb-4 @(ViewData.ModelState["Email"] != null ? "has-error" : "")">
+        <input asp-for="Email"
+               class="form-control form-control-line"
+               placeholder="Email">
+        <span asp-validation-for="Email" class="help-block"></span>
+    </div>
+    <div class="form-group mb-4 @(ViewData.ModelState["Password"] != null ? "has-error" : "")">
+        <input asp-for="Password"
+               class="form-control form-control-line"
+               placeholder="Password">
+        <span asp-validation-for="Password" class="help-block"></span>
+    </div>
+    <div class="form-group mb-4 @(ViewData.ModelState["ConfirmPassword"] != null ? "has-error" : "")">
+        <input asp-for="ConfirmPassword"
+               class="form-control form-control-line"
+               placeholder="Confirm Password">
+        <span asp-validation-for="ConfirmPassword" class="help-block"></span>
+    </div>
+    <div class="text-center mb-4">
+        <button class="btn btn-primary btn-rounded btn-block">Register</button>
+    </div>
+</form>
+
+@section JS {
+    <script src="~/assets/js/page/register.js"></script>
+}

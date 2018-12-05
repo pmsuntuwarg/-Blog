@@ -1,16 +1,18 @@
-﻿using Blog.Services;
-using Blog.ViewModels;
+﻿using Blog.Areas.Admin.Services;
+using Blog.Areas.Admin.ViewModels;
+using BServices = Blog.Services;    
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
 
 namespace Blog.Controllers
 {
     public class HomeController : Controller
     {
         private readonly IPostService _postService;
-        public HomeController(IPostService postService)
+        private readonly BServices.IPageService _pageService;
+        public HomeController(IPostService postService, BServices.IPageService pageService)
         {
             _postService = postService;
+            _pageService = pageService;
         }
 
         public ViewResult Index(string query, int page = 1, int pageSize = 10)
@@ -24,25 +26,6 @@ namespace Blog.Controllers
             return View(posts);
         }
 
-        public ViewResult Create()
-        {
-            ViewData["Action"] = "Create";
-
-            return View("Edit");
-        }
-
-        [HttpPost]
-        public ActionResult Create(PostViewModel post)
-        {
-            if(ModelState.IsValid)
-            {
-                _postService.SavePost(post);
-                return RedirectToAction("Index");
-            }
-
-            return View("Edit", post);
-        }
-
         public ActionResult Detail(string id)
         {
             var post = _postService.GetPostById(id);
@@ -53,46 +36,16 @@ namespace Blog.Controllers
 
             return View(post);
         }
+        
 
-        public ActionResult Delete(string id)
+        public ActionResult Page(string pageName)
         {
-            try
+            if(pageName != null)
             {
-                _postService.DeletePost(id);
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return RedirectToAction("Detail", new { id });
-            }
-        }
-
-        public ActionResult Edit(string id)
-        {
-            ViewData["Action"] = "Edit";
-            var post = _postService.GetPostById(id);
-
-            PostViewModel postViewModel = new PostViewModel();
-
-            postViewModel.Id = post.PostId;
-            postViewModel.Title = post.Title;
-            postViewModel.Excerpt = post.Excerpt;
-            postViewModel.Content = post.Content;
-
-            return View(postViewModel);
-        }
-
-        [HttpPost]
-        public ActionResult Edit(PostViewModel post)
-        {
-            if (ModelState.IsValid)
-            {
-                _postService.SavePost(post, "Edit");
-
-                return RedirectToAction("Detail", new { id = post.Id } );
+                ViewBag.Content = _pageService.GetPageContent(pageName);
             }
 
-            return View(post);
+            return View();
         }
     }
 }
