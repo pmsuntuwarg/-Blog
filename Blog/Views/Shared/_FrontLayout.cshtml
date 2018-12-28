@@ -48,7 +48,7 @@
                     <!-- /social -->
                     <!-- logo -->
                     <div class="nav-logo">
-                        <a href="index.html" class="logo"><img src="./img/logo.png" alt=""></a>
+                        <a href="/home" class="logo"><img src="~/assets/img/" alt=""></a>
                     </div>
                     <!-- /logo -->
                     <!-- search & aside toggle -->
@@ -74,16 +74,12 @@
                     <!-- nav -->
                     <ul class="nav-menu">
                         <li class="has-dropdown">
-                            <a href="index.html">Home</a>
+                            <a asp-controller="home" asp-action="index">Home</a>
                             <div class="dropdown">
                                 <div class="dropdown-body">
                                     <ul class="dropdown-list">
-                                        <li><a href="category.html">Category page</a></li>
-                                        <li><a href="blog-post.html">Post page</a></li>
-                                        <li><a href="author.html">Author page</a></li>
-                                        <li><a href="about.html">About Us</a></li>
-                                        <li><a href="contact.html">Contacts</a></li>
-                                        <li><a href="blank.html">Regular</a></li>
+                                        <li><a asp-controller="home" asp-action="page" asp-route-pageName="about">About Us</a></li>
+                                        <li><a asp-controller="home" asp-action="page" asp-route-pageName="contact">Contacts</a></li>
                                     </ul>
                                 </div>
                             </div>

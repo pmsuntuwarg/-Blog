@@ -12,6 +12,7 @@ namespace Blog.Areas.Admin.Models
         public string Slug { get; set; }
         public string Excerpt { get; set; }
         public string Content { get; set; }
+        public string PostTitleImgUrl { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
         public DateTime PublishedAt { get; set; }
