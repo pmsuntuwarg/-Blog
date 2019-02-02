@@ -1,7 +1,8 @@
-﻿using Blog.Areas.Admin.Services;
-using Blog.Areas.Admin.ViewModels;
+﻿using Blog.Entities.ViewModels;
+using Blog.Infrastructure.Interfaces.Admin;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace Blog.Areas.Admin.Controllers
 {
@@ -19,43 +20,41 @@ namespace Blog.Areas.Admin.Controllers
             _tagService = tagService;
         }
 
-        public ViewResult Index(string query, int page = 1, int pageSize = 10)
+        public IActionResult Index()
         {
-            if (query is null)
-            {
-                query = "";
-            }
+            var posts = _postService.GetAll();
 
-            var posts = _postService.GetAllPosts(query, page, pageSize);
-            ViewData["query"] = query;
-            ViewData["size"] = pageSize;
             return View(posts);
         }
 
-        public ViewResult Create()
+        public async Task<IActionResult> Create()
         {
-            ViewBag.Tags = _postService.GetSelectListItemsForTags(_tagService.GetAllTags(), null);
-            ViewBag.Categories = _categoryService.GetSelectListItemsForCategory();
-            ViewData["Action"] = "Create";
+            PostViewModel model = new PostViewModel
+            {
+                Tags = await _tagService.GetAll(),
+                Categories = await _categoryService.GetAll()
+            };
 
-            return View("Edit");
+            return View("Edit", model);
         }
 
         [HttpPost]
-        public ActionResult Create(PostViewModel post)
+        [ValidateAntiForgeryToken]
+        public IActionResult Create(PostViewModel post)
         {
             if (ModelState.IsValid)
             {
-                _postService.SavePost(post);
+                _postService.Create(post);
+
                 return RedirectToAction("Index");
             }
 
             return View("Edit", post);
         }
 
-        public ActionResult Detail(string id)
+        public async Task<IActionResult> Detail(string id)
         {
-            var post = _postService.GetPostById(id);
+            PostViewModel post = await _postService.GetById(id);
 
             if (post == null)
             {
@@ -67,12 +66,12 @@ namespace Blog.Areas.Admin.Controllers
             return View(post);
         }
 
-        [Authorize]
         public ActionResult Delete(string id)
         {
             try
             {
-                _postService.DeletePost(id);
+                _postService.Delete(id);
+
                 return RedirectToAction("Index");
             } catch
             {
@@ -80,32 +79,20 @@ namespace Blog.Areas.Admin.Controllers
             }
         }
 
-        [Authorize]
-        public ActionResult Edit(string id)
+        public async Task<ActionResult> Update(string id)
         {
-            ViewData["Action"] = "Edit";
-            var post = _postService.GetPostById(id);
+            PostViewModel post = await _postService.GetById(id);
 
-            PostViewModel postViewModel = new PostViewModel();
-
-            postViewModel.Id = post.PostId;
-            postViewModel.Title = post.Title;
-            postViewModel.Excerpt = post.Excerpt;
-            postViewModel.Content = post.Content;
-
-            ViewBag.Tags = _postService.GetSelectListItemsForTags(_tagService.GetAllTags(), post.PostTags);
-            ViewBag.Categories = _categoryService.GetSelectListItemsForCategory(post.Category);
-
-            return View(postViewModel);
+            return View(post);
         }
 
         [HttpPost]
-        [Authorize]
-        public ActionResult Edit(PostViewModel post)
+        [ValidateAntiForgeryToken]
+        public ActionResult Update(PostViewModel post)
         {
             if (ModelState.IsValid)
             {
-                _postService.SavePost(post, "Edit");
+                _postService.Update(post);
 
                 return RedirectToAction("Detail", new { id = post.Id });
             }

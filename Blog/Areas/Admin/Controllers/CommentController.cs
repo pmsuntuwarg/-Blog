@@ -1,7 +1,10 @@
-﻿using Blog.Areas.Admin.Services;
-using Blog.Areas.Admin.ViewModels;
+﻿using Blog.Common.Enums;
+using Blog.Entities.ViewModels;
+using Blog.Entities;
+using Blog.Infrastructure.Interfaces.Admin;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace Blog.Areas.Admin.Controllers
 {
@@ -16,12 +19,13 @@ namespace Blog.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public ActionResult Create(CommentViewModel commentViewModel)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(CommentViewModel commentViewModel)
         {
 
-            var isSaved = _commentService.SaveComment(commentViewModel);
+            DataResult result = await _commentService.Create(commentViewModel);
 
-            if (isSaved)
+            if (result.Status == Status.Success)
             {
                 return RedirectToAction("Detail", "Blog", new { id = commentViewModel.PostId });
             }

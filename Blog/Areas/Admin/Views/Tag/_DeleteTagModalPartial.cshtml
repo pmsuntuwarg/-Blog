@@ -1,15 +1,15 @@
-﻿@model Blog.Areas.Admin.Models.Tag
+﻿@model Tag
 
-<div class="modal fade" id="delete-tag-modal-@Model.TagId">
+<div class="modal fade" id="delete-tag-modal-@Model.Id">
     <div class="modal-dialog" style="width:400px;" role="document">
         <div class="modal-content timeout-modal">
             <div class="modal-body">
                 <button class="close" data-dismiss="modal" aria-label="Close"></button>
-                <div class="text-center h3 mb-3">@Model.TagName</div>
+                <div class="text-center h3 mb-3">@Model.Name</div>
                 <form asp-controller="Tag" asp-action="Delete" method="post">
                     <div id="timeout-activate-box">
                         <div class="text-center">
-                            <input asp-for="TagId" hidden />
+                            <input asp-for="Id" hidden />
                             <button type="submit" class="btn btn-primary btn-fix btn-air">Delete</button>
                         </div>
                     </div>

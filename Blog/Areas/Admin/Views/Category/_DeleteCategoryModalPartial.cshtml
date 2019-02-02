@@ -1,6 +1,6 @@
-﻿@model Blog.Areas.Admin.Models.Category
+﻿@model CategoryViewModel
 
-<div class="modal fade" id="delete-category-modal-@Model.CategoryId">
+<div class="modal fade" id="delete-category-modal-@Model.Id">
     <div class="modal-dialog" style="width:400px;" role="document">
         <div class="modal-content timeout-modal">
             <div class="modal-body">
@@ -9,7 +9,7 @@
                 <form asp-controller="Category" asp-action="Delete" method="post">
                     <div id="timeout-activate-box">
                         <div class="text-center">
-                            <input asp-for="CategoryId" hidden />
+                            <input asp-for="Id" hidden />
                             <input asp-for="CategoryName" hidden />
                             <button type="submit" class="btn btn-primary btn-fix btn-air">Delete</button>
                         </div>

@@ -1,16 +1,16 @@
-﻿using Blog.Areas.Admin.Repositories;
-using Blog.Areas.Admin.Services;
-using Blog.Data;
-using FrontServices = Blog.Services;
-using FrontRepo = Blog.Repositories;
-using Blog.Extensions;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Blog.Data.DbContext;
+using Blog.Entities.Models.Identity;
+using Blog.Infrastructure.Interfaces.Admin;
+using Blog.Infrastructure.Services.Admin;
+using Blog.Infrastructure.Repositories.Admin;
+using Blog.Infrastructure.Extensions;
 
 namespace Blog
 {
@@ -30,7 +30,7 @@ namespace Blog
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"))
                 );
-            services.AddIdentity<IdentityUser, IdentityRole>()
+            services.AddIdentity<ApplicationUser, ApplicationRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
             services.AddScoped<IPostService, PostService>();
@@ -40,12 +40,9 @@ namespace Blog
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<ITagService, TagService>();
-            services.AddScoped<ITagRepository, TagRepository>();
+            //services.AddScoped<ITagRepository, TagRepository>();
             services.AddScoped<IPageRepository, PageRepository>();
             services.AddScoped<IPageService, PageService>();
-
-            services.AddScoped<FrontServices.IPageService, FrontServices.PageService>();
-            services.AddScoped<FrontRepo.IPageRepository, FrontRepo.PageRepository>();
 
             services.AddMvc();
         }

@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Blog.Areas.Admin.Models.Tag>
+﻿@model IEnumerable<Tag>
 
 <div class="ibox">
     <div class="ibox-body">
@@ -34,16 +34,16 @@
                         {
                             <tr>
                                 <td>
-                                    @tag.TagName
+                                    @tag.Name
                                 </td>
                                 <td>
-                                    <a class="btn btn-info" asp-action="Edit" asp-route-id="@tag.TagId">
+                                    <a class="btn btn-info" asp-action="Edit" asp-route-id="@tag.Id">
                                         <i class="la la-pencil"></i>
                                         <span>
                                             Edit
                                         </span>
                                     </a>
-                                    <a class="btn btn-danger" href="javascript:;" data-toggle="modal" data-target="#delete-tag-modal-@tag.TagId">
+                                    <a class="btn btn-danger" href="javascript:;" data-toggle="modal" data-target="#delete-tag-modal-@tag.Id">
                                         <i class="ti-trash"></i>
                                         <span>
                                             Delete

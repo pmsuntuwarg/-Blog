@@ -1,11 +1,15 @@
-﻿using Blog.Areas.Admin.Models;
-using Blog.Areas.Admin.Services;
+﻿using Blog.Entities.Models;
+using Blog.Infrastructure.Interfaces.Admin;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Blog.Areas.Admin.Controllers
 {
     [Area("admin")]
+    [Authorize]
     public class TagController : Controller
     {
         private readonly ITagService _tagService;
@@ -15,25 +19,25 @@ namespace Blog.Areas.Admin.Controllers
             _tagService = tagService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var tags = _tagService.GetAllTags();
+            IEnumerable<Tag> tags = await _tagService.GetAll();
 
             return View(tags);
         }
 
         public IActionResult Create()
         {
-            ViewBag.Action = "Create";
-            return View("Edit");
+            return View("Edit", new Tag { });
         }
 
         [HttpPost]
-        public IActionResult Create(Tag tag)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(Tag tag)
         {
             if(ModelState.IsValid)
             {
-                _tagService.SaveTag(tag);
+                await _tagService.Create(tag);
 
                 return RedirectToAction(nameof(Index));
             }
@@ -41,13 +45,12 @@ namespace Blog.Areas.Admin.Controllers
             return View("Edit", tag);
         }
 
-        public IActionResult Edit(string id)
+        public async Task<IActionResult> Update(string id)
         {
-            var tag = _tagService.GetTagById(id);
+            Tag tag = await _tagService.GetById(id);
 
             if(tag != null)
             {
-                ViewBag.Action = "Edit";
                 return View("Edit", tag);
             }
 
@@ -55,11 +58,12 @@ namespace Blog.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public IActionResult Edit(Tag tag)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Update(Tag tag)
         {
             if(ModelState.IsValid)
             {
-                _tagService.SaveTag(tag, "Update");
+                await _tagService.Update(tag);
 
                 return RedirectToAction(nameof(Index));
             }
@@ -67,19 +71,20 @@ namespace Blog.Areas.Admin.Controllers
             return View("Edit", tag);
         }
 
-        public PartialViewResult Delete(string id)
+        public async Task<PartialViewResult> Delete(string id)
         {
-            Tag tag = _tagService.GetTagById(id);
+            Tag tag = await _tagService.GetById(id);
 
             return PartialView("_DeleteTagModalPartial", tag);
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Delete(Tag tag)
         {
             try
             {
-                _tagService.DeleteTag(tag);
+                _tagService.Delete(tag.Id);
             } catch
             {
                 ViewBag.Error = "Some error occured please try again later.";

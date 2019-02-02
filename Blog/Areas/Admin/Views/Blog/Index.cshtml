@@ -1,4 +1,4 @@
-﻿@model PagedList.Core.IPagedList<Blog.Areas.Admin.Models.Post>
+﻿@model PagedList.Core.IPagedList<PostViewModel>
 
 @*<div class="ibox">
     <div class="ibox-body">
@@ -155,13 +155,13 @@
                     <div class="rel">
                         <img class="card-img-top" src="/assets/img/blog/06.jpg" alt="image" />
                         <div class="card-img-overlay text-white">
-                            <span class="badge badge-success mb-5">@(post.Category?.CategoryName ?? "Uncategorized")</span>
+                            <span class="badge badge-success mb-5">@(post.CategoryName ?? "Uncategorized")</span>
                             <div class="card-title-bottom color-white mb-2">
                                 <h4 class="card-title mb-2">
-                                    <a asp-action="Detail" asp-route-id="@post.PostId">@post.Title</a>
+                                    <a asp-action="Detail" asp-route-id="@post.Id">@post.Title</a>
                                 </h4>
                                 <div>
-                                    @post.CreatedAt.ToShortDateString()
+                                    @post.CreatedDate.ToShortDateString()
                                 </div>
                             </div>
                         </div>

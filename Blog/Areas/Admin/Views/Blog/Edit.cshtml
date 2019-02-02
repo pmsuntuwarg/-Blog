@@ -1,4 +1,4 @@
-﻿@model Blog.Areas.Admin.ViewModels.PostViewModel
+﻿@model PostViewModel
 
 @section CSS {
     <link href="~/assets/vendors/select2/dist/css/select2.min.css" rel="stylesheet" />
@@ -22,7 +22,7 @@
 <div class="page-content fade-in-up">
     <div class="ibox">
         <div class="ibox-body">
-            <form asp-action="@ViewData["Action"]" class="form-horizontal" id="form-sample-1" method="post" novalidate="novalidate">
+            <form asp-action="@ViewContext.RouteData.Values["action"]" class="form-horizontal" id="form-sample-1" method="post" novalidate="novalidate">
                 @if (Model != null && Model.Id != null)
                 {
                     <input asp-for="Id" hidden />
@@ -47,16 +47,16 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label asp-for="Category" class="col-sm-2 col-form-label"></label>
+                    <label asp-for="CategoryId" class="col-sm-2 col-form-label"></label>
                     <div class="col-sm-10">
 
-                        <select asp-for="Category" asp-items="ViewBag.Categories" class="selectpicker show-tick form-control" title="Please select" data-style="btn-solid"></select>
+                        <select asp-for="CategoryId" asp-items="@{new SelectList(Model.Categories, "Id", "Name", selectedValue: Model.CategoryId)}" class="selectpicker show-tick form-control" title="Please select" data-style="btn-solid"></select>
                     </div>
                 </div>
                 <div class="form-group row">
                     <label asp-for="PostTags" class="col-sm-2 col-form-label"></label>
                     <div class="col-sm-10">
-                        <select asp-for="PostTags" asp-items="ViewBag.Tags" class="form-control select2-tag" multiple=""></select>
+                        <select asp-for="PostTags" asp-items="@{new SelectList(Model.Tags, "Id", "Name")}" class="form-control select2-tag" multiple=""></select>
                     </div>
                 </div>
 

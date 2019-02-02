@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using Blog.Areas.Admin.Models;
-using Blog.Areas.Admin.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Blog.Infrastructure.Interfaces.Admin;
+using Blog.Entities.ViewModels;
+using System.Threading.Tasks;
+using Blog.Entities.Models;
 
 namespace Blog.Areas.Admin.Controllers
 {
@@ -17,9 +19,9 @@ namespace Blog.Areas.Admin.Controllers
             _categoryService = categoryService;
         }
 
-        public ActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            IEnumerable<Category> categories =  _categoryService.GetAllCategories();
+            IEnumerable<CategoryViewModel> categories =  await _categoryService.GetAll();
 
             return View(categories);
         }
@@ -31,30 +33,29 @@ namespace Blog.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public ActionResult Create(Category category)
+        public async Task<IActionResult> Create(CategoryViewModel category)
         {
             try
             {
-                _categoryService.SaveCategory(category);
+                await _categoryService.Create(category);
 
                 return RedirectToAction(nameof(Index));
             } catch (Exception e)
             {
             }
 
-            return View("Edit", category);
+            return View("Update", category);
         }
 
-        public ActionResult Detail(string categoryId)
+        public async Task<IActionResult> Detail(string categoryId)
         {
-            Category  category = _categoryService.GetCategoryById(categoryId);
+            CategoryViewModel category = await _categoryService.GetById(categoryId);
             return View(category);
         }
         
-        public ActionResult Edit(string id)
+        public async Task<IActionResult> Update(string id)
         {
-            ViewBag.Action = "Edit";
-            Category category = _categoryService.GetCategoryById(id);
+            CategoryViewModel category = await _categoryService.GetById(id);
 
             if(category == null)
             {
@@ -66,12 +67,13 @@ namespace Blog.Areas.Admin.Controllers
             return View("Edit", category);
         }
         
-        [HttpPost, ActionName("Edit")]
-        public ActionResult Update(Category category)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Update(CategoryViewModel category)
         {
             try
             {
-                _categoryService.SaveCategory(category, "Edit");
+                await _categoryService.Create(category);
 
                 return RedirectToAction(nameof(Index));
             } catch(Exception e)
@@ -83,9 +85,10 @@ namespace Blog.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public ActionResult Delete(Category category)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete(CategoryViewModel category)
         {
-            _categoryService.DeleteCategory(category);
+            await _categoryService.Delete(category.Id);
 
             return RedirectToAction(nameof(Index));
         }

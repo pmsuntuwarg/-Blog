@@ -1,9 +1,10 @@
 ﻿using System;
-using Blog.Areas.Admin.Models;
-using Blog.Areas.Admin.Services;
-using Blog.Areas.Admin.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
+using Blog.Infrastructure.Interfaces.Admin;
+using Blog.Entities.ViewModels;
+using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace Blog.Areas.Admin.Controllers
 {
@@ -18,9 +19,9 @@ namespace Blog.Areas.Admin.Controllers
             _pageService = pageService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var pages = _pageService.GetAllPages();
+            IEnumerable<PageViewModel> pages = await _pageService.GetAll();
 
             return View(pages);
         }
@@ -34,78 +35,67 @@ namespace Blog.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(PageViewModel pageViewModel)
+        public async Task<IActionResult> Create(PageViewModel pageViewModel)
         {
             try
             {
-                Page page = _pageService.GetPageByPageName(pageViewModel.PageName);
 
-                if(page !=null)
-                {
-                    throw new Exception("Page Aready Exist");
-                }
-
-                _pageService.SavePage(pageViewModel);
+                await _pageService.Create(pageViewModel);
 
                 return RedirectToAction(nameof(Index));
             } catch(Exception e)
             {
-                ModelState.AddModelError("ThrowError", e.Message);
+                ModelState.AddModelError(string.Empty, e.Message);
             }
 
             return View("Edit", pageViewModel);
         }
 
-        public IActionResult Edit(string id)
+        public async Task<IActionResult> Update(string id)
         {
-            ViewBag.Action = "Edit";
-            Page page = _pageService.GetPageById(id);
+            PageViewModel page = await _pageService.GetById(id);
 
             if(page == null)
             {
                 return RedirectToAction(nameof(Index));
             }
 
-            return View("Edit",
-                new PageViewModel {
-                    PageId = page.PageId,
-                    Body = page.Body,
-                    Title = page.Title,
-                    PageName = page.PageName
-                });
+            return View("Edit", page);
         }
 
         [HttpPost]
-        public IActionResult Edit(PageViewModel pageViewModel)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Update(PageViewModel pageViewModel)
         {
             try
             {
-                _pageService.SavePage(pageViewModel, "Edit");
-                Page page = _pageService.GetPageById(pageViewModel.PageId);
+                await _pageService.Update(pageViewModel);
 
-                return RedirectToAction("Detail", new { id = page.PageId });
+                return RedirectToAction("Detail", new { id = pageViewModel.Id });
             } catch (Exception e)
             {
-                return View("Edit", pageViewModel);
+                ModelState.AddModelError(string.Empty, e.Message);
             }
+                return View("Edit", pageViewModel);
         }
 
-        public IActionResult Detail(string id)
+        public async Task<IActionResult> Detail(string id)
         {
-            Page page = _pageService.GetPageById(id);
+            PageViewModel page = await _pageService.GetById(id);
 
             return View(page);
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Delete(PageViewModel pageViewModel)
         {
             try
             {
-                _pageService.DeletePage(pageViewModel.PageId);
+                _pageService.Delete(pageViewModel.Id);
 
                 return RedirectToAction(nameof(Index));
-            } catch(Exception e)
+            } catch(Exception ex)
             {
                 
             }

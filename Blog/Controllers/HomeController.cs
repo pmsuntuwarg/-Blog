@@ -1,49 +1,44 @@
-﻿using Blog.Areas.Admin.Services;
-using Blog.Areas.Admin.ViewModels;
-using BServices = Blog.Services;    
+﻿using Blog.Entities.ViewModels;
+using Blog.Infrastructure.Interfaces.Admin;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace Blog.Controllers
 {
     public class HomeController : Controller
     {
         private readonly IPostService _postService;
-        private readonly BServices.IPageService _pageService;
-        public HomeController(IPostService postService, BServices.IPageService pageService)
+        public HomeController(IPostService postService)
         {
             _postService = postService;
-            _pageService = pageService;
         }
 
-        public ViewResult Index(string query, int page = 1, int pageSize = 10)
+        public ViewResult Index()
         {
-            if (query is null)
-                query = "";
-                
-            var posts = _postService.GetAllPosts(query, page, pageSize);
-            ViewData["query"] = query;
-            ViewData["size"] = pageSize;
+            var posts = _postService.GetAll();
+
             return View(posts);
         }
 
-        public ActionResult Detail(string id)
+        public async Task<IActionResult> Detail(string id)
         {
-            var post = _postService.GetPostById(id);
+            PostViewModel post = await _postService.GetById(id);
 
             if (post == null)
                 return NotFound("Post not found");
+
             _postService.IncreaseViewCount(post);
 
             return View(post);
         }
         
 
-        public ActionResult Page(string pageName)
+        public async Task<IActionResult> Page(string pageName)
         {
-            if(pageName != null)
-            {
-                ViewBag.Content = _pageService.GetPageContent(pageName);
-            }
+            //if(pageName != null)
+            //{
+            //    ViewBag.Content = await _pastService.GetPageByName(pageName);
+            //}
 
             return View();
         }

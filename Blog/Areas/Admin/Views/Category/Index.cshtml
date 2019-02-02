@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Category>
+﻿@model IEnumerable<CategoryViewModel>
 
 <div class="ibox">
     <div class="ibox-body">
@@ -37,19 +37,19 @@
                                     @category.CategoryName
                                 </td>
                                 <td>
-                                    <a class="btn btn-info" asp-action="Edit" asp-route-id="@category.CategoryId">
+                                    <a class="btn btn-info" asp-action="Edit" asp-route-id="@category.Id">
                                         <i class="la la-pencil"></i>
                                         <span>
                                             Edit
                                         </span>
                                     </a>
-                                    <a class="btn btn-danger" href="javascript:;" data-toggle="modal" data-target="#delete-category-modal-@category.CategoryId">
+                                    <a class="btn btn-danger" href="javascript:;" data-toggle="modal" data-target="#delete-category-modal-@category.Id">
                                         <i class="ti-trash"></i>
                                         <span>
                                             Delete
                                         </span>
                                     </a>
-                                    @Html.Partial("_DeleteCategoryModalPartial", new Blog.Areas.Admin.Models.Category { CategoryId=category.CategoryId, CategoryName=category.CategoryName })
+                                    @Html.Partial("_DeleteCategoryModalPartial", new Category { Id=category.Id, Name=category.CategoryName })
                                 </td>
                             </tr>
                         }
