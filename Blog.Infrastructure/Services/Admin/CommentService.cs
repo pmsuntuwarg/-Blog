@@ -8,6 +8,7 @@ using Blog.Entities.ViewModels;
 using Blog.Entities;
 using Blog.Infrastructure.Interfaces.Admin;
 using Microsoft.EntityFrameworkCore;
+using Blog.Common.Helpers;
 
 namespace Blog.Infrastructure.Services.Admin
 {
@@ -67,6 +68,11 @@ namespace Blog.Infrastructure.Services.Admin
                 ParentId = result.ParentId,
                 PostId = result.PostId
             };
+        }
+
+        public Task<PaginatedList<CommentViewModel>> GetPaginatedList(int? page, int? pageSize)
+        {
+            throw new NotImplementedException();
         }
     }
 }

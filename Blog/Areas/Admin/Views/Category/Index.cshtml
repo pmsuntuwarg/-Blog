@@ -49,7 +49,7 @@
                                             Delete
                                         </span>
                                     </a>
-                                    @Html.Partial("_DeleteCategoryModalPartial", new Category { Id=category.Id, Name=category.CategoryName })
+                                    @Html.Partial("_DeleteCategoryModalPartial", new CategoryViewModel { Id=category.Id, CategoryName=category.CategoryName })
                                 </td>
                             </tr>
                         }

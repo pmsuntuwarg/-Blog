@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Blog.Common.Helpers;
 
 namespace Blog.Infrastructure.Services.Admin
 {
@@ -107,6 +108,11 @@ namespace Blog.Infrastructure.Services.Admin
             var slug = pageName.ToLowerInvariant().Replace(" ", "-");
 
             return slug;
+        }
+
+        public Task<PaginatedList<PageViewModel>> GetPaginatedList(int? page, int? pageSize)
+        {
+            throw new NotImplementedException();
         }
     }
 }

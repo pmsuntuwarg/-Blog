@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Blog.Common.Helpers;
 
 namespace Blog.Infrastructure.Services.Admin
 {
@@ -152,5 +153,18 @@ namespace Blog.Infrastructure.Services.Admin
             // return _postRepository.GetCountByCategory(categoryName);
         }
 
+        public async Task<PaginatedList<PostViewModel>> GetPaginatedList(int? page, int? pageSize)
+        {
+            return await PaginatedList<PostViewModel>.CreateAsync((from result in _postRepository.GetAllAsync<Post>()
+                                                                                  select new PostViewModel
+                                                                                  {
+                                                                                      Id = result.Id,
+                                                                                      Title = result.Content,
+                                                                                      Excerpt = result.Excerpt,
+                                                                                      Content = result.Content,
+                                                                                      CategoryId = result.CategoryId,
+                                                                                      PostTags = result.PostTags
+                                                                                  }).AsNoTracking(), page ?? 1, pageSize ?? 10);
+        }
     }
 }

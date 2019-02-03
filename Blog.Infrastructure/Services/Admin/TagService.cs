@@ -9,6 +9,7 @@ using Blog.Entities;
 using Blog.Infrastructure.Interfaces.Admin;
 using Blog.Infrastructure.Interfaces.IRepositories;
 using Microsoft.EntityFrameworkCore;
+using Blog.Common.Helpers;
 
 namespace Blog.Infrastructure.Services.Admin
 {
@@ -59,6 +60,11 @@ namespace Blog.Infrastructure.Services.Admin
         public async Task<DataResult> Update(Tag viewModel)
         {
             return await _tagRepository.Update(viewModel);
+        }
+
+        public Task<PaginatedList<Tag>> GetPaginatedList(int? page, int? pageSize)
+        {
+            throw new NotImplementedException();
         }
     }
 }

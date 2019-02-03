@@ -21,10 +21,12 @@ namespace Blog.Entities.ViewModels
 
         public bool IsPublished { get; set; }
 
-        [Required]
+        [Display(Name = "Tags")]
+        [Required(ErrorMessage = "{0} is required")]
         public IList<PostTag> PostTags { get; set; }
 
-        [Required]
+        [Display(Name = "Category")]
+        [Required(ErrorMessage = "{0} is required")]
         public string CategoryId { get; set; }
 
         public string CategoryName { get; set; }

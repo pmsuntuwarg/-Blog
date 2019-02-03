@@ -1,4 +1,4 @@
-﻿@model PagedList.Core.IPagedList<PostViewModel>
+﻿@model PaginatedList<PostViewModel>
 
 @*<div class="ibox">
     <div class="ibox-body">
@@ -128,7 +128,7 @@
         <span class="mr-4 static-badge badge-pink"><i class="la la-pencil"></i></span>
         <div>
             <h5 class="font-strong">Blog</h5>
-            <div class="text-light">Found @Model.TotalItemCount posts</div>
+            <div class="text-light">Found @Model.Count posts</div>
         </div>
         <div class="ml-4">
             <a asp-action="Create" class="btn btn-success">Create New Blog</a>
@@ -192,10 +192,19 @@
         }
     </div>
     <div class="row mb-5">
-        <pager list="@Model"
-               asp-controller="Blog"
-               asp-action="Index"
-               asp-route-query="@ViewData["query"]"
-               asp-route-pagesize="@ViewData["size"]"
-               class="col-md-12 text-center" />
+        @{
+            var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+            var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+        }
+
+        <a asp-action="Index"
+           asp-route-page="@(Model.PageIndex - 1)"
+           class="btn btn-default @prevDisabled">
+            Previous
+        </a>
+        <a asp-action="Index"
+           asp-route-page="@(Model.PageIndex + 1)"
+           class="btn btn-default @nextDisabled">
+            Next
+        </a>
     </div>

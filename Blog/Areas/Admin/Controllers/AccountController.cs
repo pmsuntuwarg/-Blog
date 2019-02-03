@@ -3,6 +3,7 @@ using Blog.Entities.ViewModels.Account;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace Blog.Areas.Admin.Controllers
@@ -24,7 +25,7 @@ namespace Blog.Areas.Admin.Controllers
         [AllowAnonymous]
         public ActionResult Login()
         {
-            if(_signInManager.IsSignedIn(HttpContext.User))
+            if(_signInManager.IsSignedIn(User))
             {
                 return RedirectToAction("Index", "Dashboard");
             }
@@ -59,7 +60,7 @@ namespace Blog.Areas.Admin.Controllers
         [AllowAnonymous]
         public ActionResult Register()
         {
-            if(_signInManager.IsSignedIn(HttpContext.User))
+            if(_signInManager.IsSignedIn(User))
             {
                 return RedirectToAction("Index", "Dashboard");
             }
@@ -80,6 +81,9 @@ namespace Blog.Areas.Admin.Controllers
             if(user == null)
             {
                 var newUser = new ApplicationUser() {
+                    FirstName = registerViewModel.FirstName,
+                    MiddleName = registerViewModel.Email,
+                    LastName = registerViewModel.LastName,
                     Email = registerViewModel.Email,
                     UserName = registerViewModel.Username,
                     EmailConfirmed = true

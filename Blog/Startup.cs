@@ -11,6 +11,7 @@ using Blog.Infrastructure.Interfaces.Admin;
 using Blog.Infrastructure.Services.Admin;
 using Blog.Infrastructure.Repositories.Admin;
 using Blog.Infrastructure.Extensions;
+using Blog.Infrastructure.Interfaces.IRepositories;
 
 namespace Blog
 {
@@ -33,16 +34,18 @@ namespace Blog
             services.AddIdentity<ApplicationUser, ApplicationRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
-            services.AddScoped<IPostService, PostService>();
             services.AddScoped<IPostRepository, PostRepository>();
-            services.AddScoped<ICommentService, CommentService>();
             services.AddScoped<ICommentRepository, CommentRepository>();
-            services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
-            services.AddScoped<ITagService, TagService>();
-            //services.AddScoped<ITagRepository, TagRepository>();
+            services.AddScoped<ITagRepository, TagRepository>();
             services.AddScoped<IPageRepository, PageRepository>();
+
+            services.AddScoped<IPostService, PostService>();
+            services.AddScoped<ICommentService, CommentService>();
+            services.AddScoped<ICategoryService, CategoryService>();
+            services.AddScoped<ITagService, TagService>();
             services.AddScoped<IPageService, PageService>();
+
 
             services.AddMvc();
         }

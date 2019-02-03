@@ -53,7 +53,7 @@
                                             Delete
                                         </span>
                                     </a>
-                                    @Html.Partial("_DeletePageModalPartial", new Page { Id = sPage.Id, PageName = sPage.PageName})
+                                    @Html.Partial("_DeletePageModalPartial", new PageViewModel { Id = sPage.Id, PageName = sPage.PageName})
                                 </td>
                             </tr>
                         }

@@ -8,6 +8,7 @@ using Blog.Entities.ViewModels;
 using Blog.Infrastructure.Interfaces;
 using Blog.Infrastructure.Interfaces.Admin;
 using Microsoft.EntityFrameworkCore;
+using Blog.Common.Helpers;
 
 namespace Blog.Infrastructure.Services.Admin
 {
@@ -85,6 +86,11 @@ namespace Blog.Infrastructure.Services.Admin
             };
 
             return _categoryRepository.Update(category);
+        }
+
+        public Task<PaginatedList<CategoryViewModel>> GetPaginatedList(int? page, int? pageSize)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Blog.Entities.ViewModels;
+﻿using Blog.Common.Helpers;
+using Blog.Entities.ViewModels;
 using Blog.Infrastructure.Interfaces.Admin;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -20,9 +21,9 @@ namespace Blog.Areas.Admin.Controllers
             _tagService = tagService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index(int page)
         {
-            var posts = _postService.GetAll();
+            var posts = await _postService.GetPaginatedList(page, null);
 
             return View(posts);
         }
@@ -31,6 +32,7 @@ namespace Blog.Areas.Admin.Controllers
         {
             PostViewModel model = new PostViewModel
             {
+                CategoryId = string.Empty,
                 Tags = await _tagService.GetAll(),
                 Categories = await _categoryService.GetAll()
             };
@@ -40,14 +42,17 @@ namespace Blog.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(PostViewModel post)
+        public async Task<IActionResult> Create(PostViewModel post)
         {
             if (ModelState.IsValid)
             {
-                _postService.Create(post);
+                await _postService.Create(post);
 
                 return RedirectToAction("Index");
             }
+
+            post.Tags = await _tagService.GetAll();
+            post.Categories = await _categoryService.GetAll();
 
             return View("Edit", post);
         }
@@ -73,7 +78,8 @@ namespace Blog.Areas.Admin.Controllers
                 _postService.Delete(id);
 
                 return RedirectToAction("Index");
-            } catch
+            }
+            catch
             {
                 return RedirectToAction("Detail", new { id });
             }

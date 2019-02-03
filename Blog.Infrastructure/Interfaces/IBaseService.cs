@@ -1,4 +1,5 @@
-﻿using Blog.Entities;
+﻿using Blog.Common.Helpers;
+using Blog.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,5 +15,6 @@ namespace Blog.Infrastructure.Interfaces
         Task<DataResult> Delete(string id);
         Task<IEnumerable<TViewModel>> GetAll();
         Task<TViewModel> GetById(TKey key);
+        Task<PaginatedList<TViewModel>> GetPaginatedList(int? page, int? pageSize);
     }
 }

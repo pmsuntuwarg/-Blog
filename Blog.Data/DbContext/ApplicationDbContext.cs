@@ -1,4 +1,5 @@
 ﻿using Blog.Entities.Models;
+using Blog.Entities.Models.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -20,10 +21,15 @@ namespace Blog.Data.DbContext
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.HasDefaultSchema("Blog");
             base.OnModelCreating(modelBuilder);
 
+            modelBuilder.Entity<ApplicationUser>().ToTable("ApplicationUser");
+            modelBuilder.Entity<ApplicationRole>().ToTable("ApplicationRole");
+            modelBuilder.Entity<UserRole>().ToTable("UserRole");
+
             modelBuilder.Entity<PostTag>()
-                .HasKey(pt => new { pt.PostId, pt.TagId });
+                    .HasKey(pt => new { pt.PostId, pt.TagId });
         }
     }
 }
