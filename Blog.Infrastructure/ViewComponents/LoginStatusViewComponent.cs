@@ -1,9 +1,13 @@
 ﻿using Blog.Entities.Models.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
-namespace Blog.ViewComponents
+namespace Blog.Infrastructure.ViewComponents
 {
     public class LoginStatusViewComponent : ViewComponent
     {
@@ -17,7 +21,7 @@ namespace Blog.ViewComponents
 
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            if(_signInManager.IsSignedIn(HttpContext.User))
+            if (_signInManager.IsSignedIn(HttpContext.User))
             {
                 return View("LoggedIn", await _userManager.GetUserAsync(HttpContext.User));
             }

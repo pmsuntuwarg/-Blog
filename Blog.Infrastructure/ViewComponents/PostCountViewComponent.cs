@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
 
-namespace Blog.Areas.Admin.ViewComponents
+namespace Blog.Infrastructure.ViewComponents
 {
     public class PostCountViewComponent : ViewComponent
     {

@@ -22,7 +22,7 @@
                     </div>
                     <div>
                         <a data-toggle="modal" data-target="#publish-post-modal" href="javascript:;" class="btn btn-blue mr-2">Publish</a>
-                        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-success mr-2">Edit</a>
+                        <a asp-action="update" asp-route-id="@Model.Id" class="btn btn-success mr-2">Edit</a>
                         <a data-toggle="modal" data-target="#delete-post-modal" href="javascript:;" class="btn btn-danger mr-2">Delete</a>
                         @Html.Partial("_PublishPostModalPartial", new PostViewModel { Id = Model.Id })
                         @Html.Partial("_DeletePostModalPartial", new PostViewModel { Id = Model.Id, Title = Model.Title, Excerpt = Model.Excerpt })
@@ -33,12 +33,15 @@
                 <hr class="my-4">
                 <div class="flexbox">
                     <div>
-                        @foreach (var tag in Model.PostTags)
+                        @if (Model.PostTags != null && Model.PostTags.Count > 0)
                         {
-                            <span class="badge badge-primary mr-2">
-                                <i class=" fa fa-tag"></i>
-                                @tag.Tags.Name
-                            </span>
+                            @foreach (var tag in Model.PostTags)
+                            {
+                                <span class="badge badge-primary mr-2">
+                                    <i class=" fa fa-tag"></i>
+                                    @tag.Tag.Name
+                                </span>
+        }
                         }
                     </div>
                     <span>@*@Model.ViewCount*@ views</span>
@@ -46,36 +49,36 @@
                 <hr class="my-4">
 
                 <h5 class="font-strong mb-3">
-                   @* <i class="fa fa-comment-o mr-2"></i> @Model.Comments.Count() Comments*@
+                    @* <i class="fa fa-comment-o mr-2"></i> @Model.Comments.Count() Comments*@
                 </h5>
                 <ul class="media-list">
                     @*@foreach (var comment in Model.Comments.OrderByDescending(c => c.PublishedDate))
-                    {
+                        {
 
-                        <li class="media">
-                            <a class="media-img" href="javascript:;">
-                                <img src="/assets/img/users/u10.jpg" alt="image" width="45" />
-                            </a>
-                            <div class="media-body">
-                                <div class="media-heading">
-                                    <a class="comment-author" href="javascript:;">@comment.Author</a>
+                            <li class="media">
+                                <a class="media-img" href="javascript:;">
+                                    <img src="/assets/img/users/u10.jpg" alt="image" width="45" />
+                                </a>
+                                <div class="media-body">
+                                    <div class="media-heading">
+                                        <a class="comment-author" href="javascript:;">@comment.Author</a>
 
-                                    <small class="text-muted ml-2">@(DateTime.UtcNow.ToLocalTime() - comment.PublishedDate.ToLocalTime())</small>
-                                    <div class="pull-right font-13">
-                                        <a class="text-muted mr-2" data-toggle="tooltip" data-original-title="Like">
-                                            <i class="fa fa-heart"></i>
-                                        </a>
-                                        <a class="text-muted" data-toggle="tooltip" data-original-title="Reply">
-                                            <i class="fa fa-reply"></i>
-                                        </a>
+                                        <small class="text-muted ml-2">@(DateTime.UtcNow.ToLocalTime() - comment.PublishedDate.ToLocalTime())</small>
+                                        <div class="pull-right font-13">
+                                            <a class="text-muted mr-2" data-toggle="tooltip" data-original-title="Like">
+                                                <i class="fa fa-heart"></i>
+                                            </a>
+                                            <a class="text-muted" data-toggle="tooltip" data-original-title="Reply">
+                                                <i class="fa fa-reply"></i>
+                                            </a>
+                                        </div>
                                     </div>
+                                    <p class="m-0">
+                                        @comment.Content
+                                    </p>
                                 </div>
-                                <p class="m-0">
-                                    @comment.Content
-                                </p>
-                            </div>
-                        </li>
-                    }*@
+                            </li>
+                        }*@
                 </ul>
                 <h5 class="font-strong mt-4 mb-3">Leave A Comment</h5>
                 @Html.Partial("Comment/_CommentFormPartialView", new CommentViewModel { PostId = Model.Id, Content = ViewBag.Comment })

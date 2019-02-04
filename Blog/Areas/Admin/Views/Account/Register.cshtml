@@ -44,7 +44,7 @@
 
 @model RegisterViewModel
 
-<form class="ibox-body" id="register-form" asp-action="register" method="POST">
+<form class="ibox-body" id="register-form" asp-action="register" asp-antiforgery="true" method="POST">
     <h4 class="font-strong text-center mb-5">Register</h4>
     <div class="form-group mb-4 @(ViewData.ModelState["Username"] != null ? "has-error" : "")">
         <input asp-for="Username"

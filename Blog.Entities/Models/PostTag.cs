@@ -9,9 +9,9 @@ namespace Blog.Entities.Models
         public string TagId { get; set; }
 
         [ForeignKey("PostId")]
-        public Post Posts { get; set; }
+        public Post Post { get; set; }
 
         [ForeignKey("TagId")]
-        public Tag Tags { get; set; }
+        public Tag Tag { get; set; }
     }
 }

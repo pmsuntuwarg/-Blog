@@ -18,7 +18,7 @@
 <div class="page-content fade-in-up">
     <div class="ibox">
         <div class="ibox-body">
-            <form asp-action="@ViewContext.RouteData.Values["action"]" class="form-horizontal" id="form-sample-1" method="post" novalidate="novalidate">
+            <form asp-action="@ViewContext.RouteData.Values["action"]" class="form-horizontal" asp-antiforgery="true" id="form-sample-1" method="post" novalidate="novalidate">
                 @if (Model != null && Model.Id != null)
                 {
                     <input asp-for="Id" hidden />

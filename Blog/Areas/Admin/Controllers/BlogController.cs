@@ -21,7 +21,7 @@ namespace Blog.Areas.Admin.Controllers
             _tagService = tagService;
         }
 
-        public async Task<IActionResult> Index(int page)
+        public async Task<IActionResult> Index(int? page)
         {
             var posts = await _postService.GetPaginatedList(page, null);
 
@@ -89,7 +89,7 @@ namespace Blog.Areas.Admin.Controllers
         {
             PostViewModel post = await _postService.GetById(id);
 
-            return View(post);
+            return View("Edit", post);
         }
 
         [HttpPost]
@@ -103,7 +103,7 @@ namespace Blog.Areas.Admin.Controllers
                 return RedirectToAction("Detail", new { id = post.Id });
             }
 
-            return View(post);
+            return View("Edit", post);
         }
     }
 }
