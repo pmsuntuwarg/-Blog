@@ -37,19 +37,14 @@ namespace Blog.Infrastructure.Services.Admin
             };
         }
 
-        public async Task<IEnumerable<Tag>> GetAll()
+        public async Task<IReadOnlyList<Tag>> GetAll()
         {
             return await _tagRepository.GetAllAsync<Tag>().ToListAsync();
         }
 
         public Task<Tag> GetById(string key)
         {
-            throw new NotImplementedException();
-        }
-
-        public async Task<Tag> GetTagById(string tagId)
-        {
-            return await _tagRepository.GetById<Tag, string>(tagId);
+            return _tagRepository.GetById<Tag, string>(key);
         }
 
         public async Task<DataResult> Create(Tag tag)

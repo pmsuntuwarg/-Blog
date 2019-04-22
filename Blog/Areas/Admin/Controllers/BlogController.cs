@@ -1,4 +1,5 @@
 ﻿using Blog.Common.Helpers;
+using Blog.Entities.Models;
 using Blog.Entities.ViewModels;
 using Blog.Infrastructure.Interfaces.Admin;
 using Microsoft.AspNetCore.Authorization;
@@ -42,7 +43,7 @@ namespace Blog.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(PostViewModel post)
+        public async Task<IActionResult> Create([FromForm]PostViewModel post)
         {
             if (ModelState.IsValid)
             {
@@ -88,20 +89,30 @@ namespace Blog.Areas.Admin.Controllers
         public async Task<ActionResult> Update(string id)
         {
             PostViewModel post = await _postService.GetById(id);
+            post.Categories = await _categoryService.GetAll();
+            post.Tags = await _tagService.GetAll();
+
+            foreach(PostTag postTag in post.PostTags)
+            {
+                post.TagIds.Add(postTag.TagId);
+            }
 
             return View("Edit", post);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Update(PostViewModel post)
+        public async Task<IActionResult> Update([FromForm]PostViewModel post)
         {
             if (ModelState.IsValid)
             {
-                _postService.Update(post);
+                await _postService.Update(post);
 
                 return RedirectToAction("Detail", new { id = post.Id });
             }
+
+            post.Categories = await _categoryService.GetAll();
+            post.Tags =await  _tagService.GetAll();
 
             return View("Edit", post);
         }

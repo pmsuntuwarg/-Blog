@@ -13,6 +13,7 @@ namespace Blog.Entities.ViewModels
 
         [Required]
         public string Title { get; set; }
+
         [Required]
         public string Excerpt { get; set; }
 
@@ -23,7 +24,7 @@ namespace Blog.Entities.ViewModels
 
         [Display(Name = "Tags")]
         [Required(ErrorMessage = "{0} is required")]
-        public IList<PostTag> PostTags { get; set; }
+        public List<string> TagIds { get; set; } = new List<string>();
 
         [Display(Name = "Category")]
         [Required(ErrorMessage = "{0} is required")]
@@ -32,10 +33,12 @@ namespace Blog.Entities.ViewModels
         public string CategoryName { get; set; }
 
         public DateTime CreatedDate { get; set; }
-        public int ViewCount { get; set; }
+        public long ViewCount { get; set; }
+        public int CommentCount { get; set; }
 
-        public IEnumerable<CategoryViewModel> Categories { get; set; }
-        public IEnumerable<Tag> Tags { get; set; }
-        public IEnumerable<CommentViewModel> Comments { get; set; }
+        public List<PostTag> PostTags { get; set; } 
+        public IReadOnlyList<CategoryViewModel> Categories { get; set; } 
+        public IReadOnlyList<Tag> Tags { get; set; } 
+        public IReadOnlyList<CommentViewModel> Comments { get; set; } 
     }
 }

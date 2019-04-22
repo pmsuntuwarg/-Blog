@@ -15,6 +15,5 @@ namespace Blog.Infrastructure.Repositories.Admin
         {
             _context = context;
         }
-        
     }
 }

@@ -37,7 +37,7 @@
                                     @tag.Name
                                 </td>
                                 <td>
-                                    <a class="btn btn-info" asp-action="Edit" asp-route-id="@tag.Id">
+                                    <a class="btn btn-info" asp-action="update" asp-route-id="@tag.Id">
                                         <i class="la la-pencil"></i>
                                         <span>
                                             Edit
@@ -49,7 +49,7 @@
                                             Delete
                                         </span>
                                     </a>
-                                    @Html.Partial("_DeleteTagModalPartial", tag)
+                                    <partial name="_DeleteTagModalPartial" model="tag" />
                                 </td>
                             </tr>
                         }

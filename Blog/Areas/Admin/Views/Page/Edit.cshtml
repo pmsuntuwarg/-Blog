@@ -8,10 +8,10 @@
         </li>
         @if (Model != null && Model.Id != null)
         {
-            <li class="breadcrumb-item"> <a asp-action="Edit">Edit</a> </li>
+            <li class="breadcrumb-item"> <a asp-action="update">Edit</a> </li>
         } else
         {
-            <li class="breadcrumb-item"> <a asp-action="Create">Create</a> </li>
+            <li class="breadcrumb-item"> <a asp-action="create">Create</a> </li>
         }
     </ol>
 </div>

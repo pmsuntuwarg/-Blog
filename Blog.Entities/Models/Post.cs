@@ -21,6 +21,6 @@ namespace Blog.Entities.Models
         public Category Category { get; set; }
 
         public IEnumerable<Comment> Comments { get; set; }
-        public IList<PostTag> PostTags { get; set; }
+        public List<PostTag> PostTags { get; set; }
     }
 }

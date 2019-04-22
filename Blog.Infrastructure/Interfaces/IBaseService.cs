@@ -13,7 +13,7 @@ namespace Blog.Infrastructure.Interfaces
         Task<DataResult> Create(TViewModel viewModel);
         Task<DataResult> Update(TViewModel viewModel);
         Task<DataResult> Delete(string id);
-        Task<IEnumerable<TViewModel>> GetAll();
+        Task<IReadOnlyList<TViewModel>> GetAll();
         Task<TViewModel> GetById(TKey key);
         Task<PaginatedList<TViewModel>> GetPaginatedList(int? page, int? pageSize);
     }

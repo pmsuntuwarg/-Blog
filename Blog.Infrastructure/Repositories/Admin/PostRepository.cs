@@ -6,6 +6,7 @@ using PagedList.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Blog.Infrastructure.Repositories.Admin
 {
@@ -36,25 +37,18 @@ namespace Blog.Infrastructure.Repositories.Admin
                 .Take(takeTotal);
         }
 
-        public Post GetById(string postId)
+        public async Task<Post> GetById(string postId)
         {
-            return _context.Posts
-                .Include(p => p.Comments.OrderByDescending(c => c.PublishedDate))
+            var a = await _context.Posts
+                .Include(p => p.Comments)
                 .Include( p => p.Category)
                 .Include(p => p.PostTags)
                 .ThenInclude(pt => pt.Tag)
-                .FirstOrDefault(p => p.Id == postId);
+                .FirstOrDefaultAsync(p => p.Id == postId);
+
+            return a;
         }
 
 
-        public void DeletePostTags(IEnumerable<PostTag> postTags)
-        {
-            foreach(PostTag postTag in postTags)
-            {
-                _context.PostTags.Remove(postTag);
-            }
-
-            _context.SaveChanges();
-        }
     }
 }

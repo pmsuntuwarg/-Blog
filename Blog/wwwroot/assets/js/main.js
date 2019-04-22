@@ -13,5 +13,7 @@
     //        ['codeview']
     //    ]
     //});
+    $('#datatable').DataTable();
     $('.select2-tag').select2();
+
 });

@@ -8,6 +8,6 @@ namespace Blog.Entities.Models
     {
         public string Name { get; set; }
 
-        public List<PostTag> PostTags { get; }
+        public List<PostTag> PostTags { get; set; }
     }
 }

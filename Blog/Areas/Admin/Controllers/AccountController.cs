@@ -1,4 +1,5 @@
-﻿using Blog.Entities.Models.Identity;
+﻿using Blog.Common.Helpers;
+using Blog.Entities.Models.Identity;
 using Blog.Entities.ViewModels.Account;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -48,7 +49,10 @@ namespace Blog.Areas.Admin.Controllers
                 var result = await _signInManager.PasswordSignInAsync(user, loginViewModel.Password, false, false);
 
                 if (result.Succeeded)
+                {
+
                     return RedirectToAction("Index", "Dashboard");
+                }
             }
 
             ModelState.AddModelError("NotFound", "Username/Password combination not found");

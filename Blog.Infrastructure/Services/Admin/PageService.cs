@@ -38,7 +38,7 @@ namespace Blog.Infrastructure.Services.Admin
 
         }
 
-        public async Task<IEnumerable<PageViewModel>> GetAll()
+        public async Task<IReadOnlyList<PageViewModel>> GetAll()
         {
             return await (from result in _pageRespository.GetAllAsync<Page>()
                           select new PageViewModel
@@ -93,6 +93,7 @@ namespace Blog.Infrastructure.Services.Admin
         {
             Page page = new Page
             {
+                Id = viewModel.Id,
                 Title = viewModel.Title,
                 PageName = viewModel.PageName,
                 Body = viewModel.Body,

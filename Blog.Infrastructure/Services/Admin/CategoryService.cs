@@ -28,7 +28,7 @@ namespace Blog.Infrastructure.Services.Admin
 
         }
 
-        public async Task<IEnumerable<CategoryViewModel>> GetAll()
+        public async Task<IReadOnlyList<CategoryViewModel>> GetAll()
         {
             return await (from result in _categoryRepository.GetAllAsync<Category>()
                          select new CategoryViewModel

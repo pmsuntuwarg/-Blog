@@ -12,6 +12,8 @@ using Blog.Infrastructure.Services.Admin;
 using Blog.Infrastructure.Repositories.Admin;
 using Blog.Infrastructure.Extensions;
 using Blog.Infrastructure.Interfaces.IRepositories;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Blog.Common.Helpers;
 
 namespace Blog
 {
@@ -46,7 +48,12 @@ namespace Blog
             services.AddScoped<ITagService, TagService>();
             services.AddScoped<IPageService, PageService>();
 
+            services.ConfigureApplicationCookie(options => 
+                {
+                    options.LoginPath = "/login";
+                });
 
+            services.AddHttpContextAccessor();
             services.AddMvc();
         }
 
@@ -59,7 +66,7 @@ namespace Blog
             }
 
             app.UseStatusCodePages();
-            app.UseStaticFiles();
+            app.UseStaticFiles(); 
             app.UseAuthentication();
             app.UseMvcWithCustomizedRoute();
         }

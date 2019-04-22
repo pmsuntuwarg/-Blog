@@ -45,7 +45,7 @@ namespace Blog.Infrastructure.Services.Admin
             
         }
 
-        public async Task<IEnumerable<CommentViewModel>> GetAll()
+        public async Task<IReadOnlyList<CommentViewModel>> GetAll()
         {
             return await (from result in _commentRepository.GetAllAsync<Comment>()
                          select new CommentViewModel

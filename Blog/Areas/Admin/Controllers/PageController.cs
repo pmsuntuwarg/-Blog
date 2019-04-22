@@ -35,6 +35,7 @@ namespace Blog.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(PageViewModel pageViewModel)
         {
             try
@@ -72,9 +73,9 @@ namespace Blog.Areas.Admin.Controllers
                 await _pageService.Update(pageViewModel);
 
                 return RedirectToAction("Detail", new { id = pageViewModel.Id });
-            } catch (Exception e)
+            } catch (Exception ex)
             {
-                ModelState.AddModelError(string.Empty, e.Message);
+                ModelState.AddModelError(string.Empty, ex.Message);
             }
                 return View("Edit", pageViewModel);
         }
