@@ -108,10 +108,7 @@ namespace Blog.Areas.Admin.Controllers
 
         [Route("/forgetpassword")]
         [AllowAnonymous]
-        public ActionResult ForgetPassword()
-        {
-            return View();
-        }
+        public ActionResult ForgetPassword() => View();
 
         [HttpPost]
         [Route("/forgetpassword")]

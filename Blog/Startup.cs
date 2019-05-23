@@ -35,18 +35,9 @@ namespace Blog
                 );
             services.AddIdentity<ApplicationUser, ApplicationRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
-            services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
-            services.AddScoped<IPostRepository, PostRepository>();
-            services.AddScoped<ICommentRepository, CommentRepository>();
-            services.AddScoped<ICategoryRepository, CategoryRepository>();
-            services.AddScoped<ITagRepository, TagRepository>();
-            services.AddScoped<IPageRepository, PageRepository>();
 
-            services.AddScoped<IPostService, PostService>();
-            services.AddScoped<ICommentService, CommentService>();
-            services.AddScoped<ICategoryService, CategoryService>();
-            services.AddScoped<ITagService, TagService>();
-            services.AddScoped<IPageService, PageService>();
+            // Custom Extension.
+            services.DependencyResolver();
 
             services.ConfigureApplicationCookie(options => 
                 {
@@ -54,7 +45,13 @@ namespace Blog
                 });
 
             services.AddHttpContextAccessor();
+
             services.AddMvc();
+            
+            services.AddMiniProfiler(options => {
+                options.RouteBasePath = "/profiler";
+            }).AddEntityFramework();
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -68,6 +65,9 @@ namespace Blog
             app.UseStatusCodePages();
             app.UseStaticFiles(); 
             app.UseAuthentication();
+
+            app.UseMiniProfiler();
+
             app.UseMvcWithCustomizedRoute();
         }
     }

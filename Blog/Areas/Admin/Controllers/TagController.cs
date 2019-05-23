@@ -49,7 +49,7 @@ namespace Blog.Areas.Admin.Controllers
         {
             Tag tag = await _tagService.GetById(id);
 
-            if(tag != null)
+            if(!string.IsNullOrEmpty(id))
             {
                 return View("Edit", tag);
             }

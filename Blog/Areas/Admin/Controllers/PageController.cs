@@ -5,6 +5,7 @@ using Blog.Infrastructure.Interfaces.Admin;
 using Blog.Entities.ViewModels;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using Blog.Entities.ViewModels.DataTable;
 
 namespace Blog.Areas.Admin.Controllers
 {
@@ -19,11 +20,13 @@ namespace Blog.Areas.Admin.Controllers
             _pageService = pageService;
         }
 
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            IEnumerable<PageViewModel> pages = await _pageService.GetAll();
+            //IEnumerable<PageViewModel> pages = await _pageService.GetAll();
 
-            return View(pages);
+            //return View(pages);
+
+            return View();
         }
 
         [HttpGet]
@@ -89,11 +92,11 @@ namespace Blog.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Delete(PageViewModel pageViewModel)
+        public async Task<IActionResult> Delete(PageViewModel pageViewModel)
         {
             try
             {
-                _pageService.Delete(pageViewModel.Id);
+                await _pageService.Delete(pageViewModel.Id);
 
                 return RedirectToAction(nameof(Index));
             } catch(Exception ex)
@@ -102,6 +105,23 @@ namespace Blog.Areas.Admin.Controllers
             }
 
             return RedirectToAction(nameof(Index));
+        }
+
+        [HttpPost]
+        [ResponseCache(Duration = 200)]
+        public async Task<IActionResult> GetPages(DataTableAjaxPostModel model)
+        {
+            var result = await _pageService.GetPages(model);
+
+            return Json(new
+            {
+                //thigs to send to datatable - mendatory
+
+                draw = model.draw,
+                recordsTotal = 500,// totalResultsCount,
+                recordsFiltered = 100,// filteredResultsCount,
+                data = result
+            });
         }
     }
 }

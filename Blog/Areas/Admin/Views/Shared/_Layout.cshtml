@@ -78,6 +78,7 @@
             <!-- START PAGE CONTENT-->
             <div class="page-content fade-in-up">
                 @RenderBody()
+            <mini-profiler position="StackExchange.Profiling.RenderPosition.BottomLeft" />
             </div>
             <!-- END PAGE CONTENT-->
         </div>
@@ -102,7 +103,7 @@
     <script src="/assets/js/app.min.js"></script>
     <!-- PAGE LEVEL SCRIPTS-->
     <!-- CUSTOM JS-->
-    @RenderSection("JS", required: false)
+    @RenderSection("Scripts", required: false)
     <script src="~/assets/js/main.js"></script>
     <!-- CUSTOM JS-->
 </body>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,5 +15,8 @@ namespace Blog.Entities.Models
         public string PageSlug { get; set; }
         public bool IsPublished { get; set; }
         public bool IsDraft { get; set; }
+
+        [NotMapped]
+        public int TotalCount { get; set; }
     }
 }
