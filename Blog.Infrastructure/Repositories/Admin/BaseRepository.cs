@@ -27,15 +27,15 @@ namespace Blog.Infrastructure.Repositories.Admin
             {
                 try
                 {
-                    await _context.Set<T>().AddAsync(model);
-                    await _context.SaveChangesAsync();
+                    var a = await _context.Set<T>().AddAsync(model);
+                    var b = await _context.SaveChangesAsync();
                     _transaction.Commit();
 
                     return new DataResult
                     {
                         Status = Status.Success,
                         Message = "Saved Successfully",
-                        ReturnId = model.GetType().GetProperty("Id").ToString()
+                        ReturnId = (string)model.GetType().GetProperty("Id").GetValue(model, null)
                     };
                 }
                 catch (DbException ex)

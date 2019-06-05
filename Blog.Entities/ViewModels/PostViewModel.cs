@@ -36,7 +36,7 @@ namespace Blog.Entities.ViewModels
         public long ViewCount { get; set; }
         public int CommentCount { get; set; }
 
-        public List<PostTag> PostTags { get; set; } 
+        public IList<PostTag> PostTags { get; set; } 
         public IReadOnlyList<CategoryViewModel> Categories { get; set; } 
         public IReadOnlyList<Tag> Tags { get; set; } 
         public IReadOnlyList<CommentViewModel> Comments { get; set; } 

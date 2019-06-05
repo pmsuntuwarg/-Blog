@@ -11,7 +11,7 @@ namespace Blog.Areas.Admin.Controllers
 {
     [Area("admin")]
     [Authorize]
-    public class PageController : Controller
+    public class PageController: Controller
     {
         private readonly IPageService _pageService;
 
@@ -47,7 +47,8 @@ namespace Blog.Areas.Admin.Controllers
                 await _pageService.Create(pageViewModel);
 
                 return RedirectToAction(nameof(Index));
-            } catch(Exception e)
+            }
+            catch (Exception e)
             {
                 ModelState.AddModelError(string.Empty, e.Message);
             }
@@ -59,7 +60,7 @@ namespace Blog.Areas.Admin.Controllers
         {
             PageViewModel page = await _pageService.GetById(id);
 
-            if(page == null)
+            if (page == null)
             {
                 return RedirectToAction(nameof(Index));
             }
@@ -76,11 +77,13 @@ namespace Blog.Areas.Admin.Controllers
                 await _pageService.Update(pageViewModel);
 
                 return RedirectToAction("Detail", new { id = pageViewModel.Id });
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 ModelState.AddModelError(string.Empty, ex.Message);
             }
-                return View("Edit", pageViewModel);
+
+            return View("Edit", pageViewModel);
         }
 
         public async Task<IActionResult> Detail(string id)
@@ -94,15 +97,7 @@ namespace Blog.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(PageViewModel pageViewModel)
         {
-            try
-            {
-                await _pageService.Delete(pageViewModel.Id);
-
-                return RedirectToAction(nameof(Index));
-            } catch(Exception ex)
-            {
-                
-            }
+            await _pageService.Delete(pageViewModel.Id);
 
             return RedirectToAction(nameof(Index));
         }
@@ -115,12 +110,11 @@ namespace Blog.Areas.Admin.Controllers
 
             return Json(new
             {
-                //thigs to send to datatable - mendatory
-
-                draw = model.draw,
-                recordsTotal = 500,// totalResultsCount,
-                recordsFiltered = 100,// filteredResultsCount,
-                data = result
+                //thigs to send to datatable - mandatory
+                draw            = model.draw,
+                recordsTotal    = result[0].TotalCount,      // totalResultsCount,
+                recordsFiltered = result[0].FilteredCount,   // filteredResultsCount,
+                data            = result
             });
         }
     }

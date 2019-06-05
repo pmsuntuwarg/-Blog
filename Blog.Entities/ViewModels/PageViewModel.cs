@@ -24,5 +24,8 @@ namespace Blog.Entities.ViewModels
         [Required]
         [Display(Name = "Page Body")]
         public string Body { get; set; }
+
+        public int TotalCount { get; set; }
+        public int FilteredCount { get; set; }
     }
 }

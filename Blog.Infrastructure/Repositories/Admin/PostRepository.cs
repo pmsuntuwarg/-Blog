@@ -10,10 +10,10 @@ using System.Threading.Tasks;
 
 namespace Blog.Infrastructure.Repositories.Admin
 {
-    public class PostRepository : BaseRepository, IPostRepository
+    public class PostRepository: BaseRepository, IPostRepository
     {
         private readonly ApplicationDbContext _context;
-        public PostRepository(ApplicationDbContext context) : base(context)
+        public PostRepository(ApplicationDbContext context): base(context)
         {
             _context = context;
         }
@@ -23,7 +23,7 @@ namespace Blog.Infrastructure.Repositories.Admin
             var whereQuery = _context.Posts.Where(p => p.Content.Contains(query) || p.Excerpt.Contains(query)|| p.Title.Contains(query))
                 .Include(p => p.Category)
                 .Include(p => p.Comments)
-                .Include(p=>p.PostTags).ThenInclude(pt => pt.Tag);
+                .Include(p => p.PostTags).ThenInclude(pt => pt.Tag);
 
             PagedList<Post> posts = new PagedList<Post>(whereQuery, pageNumber, pageSize);
 

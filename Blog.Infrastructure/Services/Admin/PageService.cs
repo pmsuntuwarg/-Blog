@@ -14,7 +14,7 @@ using System.Linq.Expressions;
 
 namespace Blog.Infrastructure.Services.Admin
 {
-    public class PageService : IPageService
+    public class PageService: IPageService
     {
         private readonly IPageRepository _pageRespository;
 
@@ -34,7 +34,7 @@ namespace Blog.Infrastructure.Services.Admin
 
             return new DataResult
             {
-                Status = Status.Failed,
+                Status  = Status.Failed,
                 Message = "Cannot delete"
             };
 
@@ -45,9 +45,9 @@ namespace Blog.Infrastructure.Services.Admin
             return await (from result in _pageRespository.GetAllAsync<Page>()
                           select new PageViewModel
                           {
-                              Id = result.Id,
-                              Title = result.Title,
-                              Body = result.Body,
+                              Id       = result.Id,
+                              Title    = result.Title,
+                              Body     = result.Body,
                               PageName = result.PageName
                           }).ToListAsync();
         }
@@ -60,10 +60,10 @@ namespace Blog.Infrastructure.Services.Admin
             {
                 return new PageViewModel
                 {
-                    Id = result.Id,
+                    Id       = result.Id,
                     PageName = result.PageName,
-                    Title = result.Title,
-                    Body = result.Body
+                    Title    = result.Title,
+                    Body     = result.Body
                 };
             }
 
@@ -79,13 +79,13 @@ namespace Blog.Infrastructure.Services.Admin
         {
             Page page = new Page
             {
-                Title = viewModel.Title,
-                PageName = viewModel.PageName,
-                Body = viewModel.Body,
-                PageSlug = CreateSlug(viewModel.PageName),
+                Title       = viewModel.Title,
+                PageName    = viewModel.PageName,
+                Body        = viewModel.Body,
+                PageSlug    = CreateSlug(viewModel.PageName),
                 CreatedDate = DateTime.UtcNow,
                 IsPublished = false,
-                IsDraft = true
+                IsDraft     = true
             };
 
             return await _pageRespository.Create(page);
@@ -95,11 +95,11 @@ namespace Blog.Infrastructure.Services.Admin
         {
             Page page = new Page
             {
-                Id = viewModel.Id,
-                Title = viewModel.Title,
-                PageName = viewModel.PageName,
-                Body = viewModel.Body,
-                PageSlug = CreateSlug(viewModel.PageName),
+                Id          = viewModel.Id,
+                Title       = viewModel.Title,
+                PageName    = viewModel.PageName,
+                Body        = viewModel.Body,
+                PageSlug    = CreateSlug(viewModel.PageName),
                 UpdatedDate = DateTime.UtcNow
             };
 
@@ -120,25 +120,24 @@ namespace Blog.Infrastructure.Services.Admin
 
         public async Task<List<PageViewModel>> GetPages(DataTableAjaxPostModel model)
         {
-
             var searchBy = (model.search != null) ? model.search.value : null;
-            var take = model.length;
-            var skip = model.start;
+            var take     = model.length;
+            var skip     = model.start;
 
-            string sortBy = "";
-            bool sortDir = true;
+            string sortBy  = "";
+            bool   sortDir = true;
 
             if (model.order != null)
             {
                 // in this example we just default sort on the 1st column
-                sortBy = model.columns[model.order[0].column].data;
+                sortBy  = model.columns[model.order[0].column].data;
                 sortDir = model.order[0].dir.ToLower() == "asc";
             }
 
-            if (String.IsNullOrEmpty(searchBy))
+            if (string.IsNullOrEmpty(searchBy))
             {
                 // if we have an empty search then just order the results by Id ascending
-                sortBy = "Id";
+                sortBy  = "Id";
                 sortDir = true;
             }
 
@@ -147,10 +146,12 @@ namespace Blog.Infrastructure.Services.Admin
             List<PageViewModel> result = (from a in _pageRespository.GetPages(whereClause, searchBy, take, skip, sortBy, sortDir)
             select new PageViewModel
             {
-                Id = a.Id,
-                Body = a.Body,
-                PageName = a.PageName,
-                Title = a.Title
+                Id            = a.Id,
+                Body          = a.Body,
+                PageName      = a.PageName,
+                Title         = a.Title,    
+                TotalCount    = a.TotalCount,
+                FilteredCount = a.FilteredCount
             }).ToList();
 
             if (result == null)
@@ -164,8 +165,9 @@ namespace Blog.Infrastructure.Services.Admin
         private Expression<Func<Page, bool>> BuildDynamicWhereClause(string searchValue)
         {
             // simple method to dynamically plugin a where clause
-            var predicate = PredicateBuilder.True<Page>();// true -where(true) return all
-            if (String.IsNullOrWhiteSpace(searchValue) == false)
+            var predicate = PredicateBuilder.True<Page>();  // true -where(true) return all
+
+            if (!string.IsNullOrWhiteSpace(searchValue))
             {
                 // as we only have 2 cols allow the user type in name 'firstname lastname' then use the list to search the first and last name of dbase
                 var searchTerms = searchValue.Split(' ').ToList().ConvertAll(x => x.ToLower());

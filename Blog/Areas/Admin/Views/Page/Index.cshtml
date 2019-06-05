@@ -28,45 +28,6 @@
                         <th class="no-sort"></th>
                     </tr>
                 </thead>
-                @*<tbody>
-                    @if (Model?.Count() > 0)
-                    {
-                        @foreach (var sPage in Model)
-                        {
-                            <tr>
-                                <td>
-                                    @sPage.PageName
-                                </td>
-                                <td>
-                                    @sPage.Title
-                                </td>
-                                <td>
-                                    <a class="btn btn-info" asp-action="update" asp-route-id="@sPage.Id">
-                                        <i class="la la-pencil"></i>
-                                        <span>
-                                            Edit
-                                        </span>
-                                    </a>
-                                    <a class="btn btn-danger" href="javascript:;" data-toggle="modal" data-target="#delete-page-modal-@sPage.Id">
-                                        <i class="ti-trash"></i>
-                                        <span>
-                                            Delete
-                                        </span>
-                                    </a>
-                                    @Html.Partial("_DeletePageModalPartial", new PageViewModel { Id = sPage.Id, PageName = sPage.PageName})
-                                </td>
-                            </tr>
-                        }
-
-                    } else
-                    {
-                        <tr>
-                            <td>
-                                No Pages
-                            </td>
-                        </tr>
-                    }
-                </tbody>*@
             </table>
         </div>
     </div>

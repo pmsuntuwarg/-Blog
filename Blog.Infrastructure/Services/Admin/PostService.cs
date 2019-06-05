@@ -16,7 +16,7 @@ using Microsoft.AspNetCore.Http;
 
 namespace Blog.Infrastructure.Services.Admin
 {
-    public class PostService : IPostService
+    public class PostService: IPostService
     {
         private readonly IPostRepository _postRepository;
         private readonly UserManager<ApplicationUser> _userManager;
@@ -24,8 +24,8 @@ namespace Blog.Infrastructure.Services.Admin
 
         public PostService(IPostRepository postRepository, UserManager<ApplicationUser> userManager, IHttpContextAccessor httpContextAccessor)
         {
-            _postRepository = postRepository;
-            _userManager = userManager;
+            _postRepository      = postRepository;
+            _userManager         = userManager;
             _httpContextAccessor = httpContextAccessor;
         }
 
@@ -40,7 +40,7 @@ namespace Blog.Infrastructure.Services.Admin
 
             return new DataResult
             {
-                Status = Status.Failed,
+                Status  = Status.Failed,
                 Message = "Cannot delete"
             };
         }
@@ -50,14 +50,14 @@ namespace Blog.Infrastructure.Services.Admin
             return await (from result in _postRepository.GetAllAsync<Post>()
                           select new PostViewModel
                           {
-                              Id = result.Id,
-                              Title = result.Content,
-                              Excerpt = result.Excerpt,
-                              Content = result.Content,
-                              CategoryId = result.CategoryId,
-                              PostTags = result.PostTags,
+                              Id           = result.Id,
+                              Title        = result.Content,
+                              Excerpt      = result.Excerpt,
+                              Content      = result.Content,
+                              CategoryId   = result.CategoryId,
+                              PostTags     = result.PostTags,
                               CommentCount = result.Comments.Count(),
-                              ViewCount = result.ViewCount
+                              ViewCount    = result.ViewCount
                           }).ToListAsync();
         }
 
@@ -67,15 +67,15 @@ namespace Blog.Infrastructure.Services.Admin
 
             return new PostViewModel
             {
-                Id = post.Id,
-                Title = post.Content,
-                Excerpt = post.Excerpt,
-                Content = post.Content,
-                CategoryId = post.CategoryId,
-                PostTags = post.PostTags,
-                CreatedDate = post.CreatedDate,
+                Id           = post.Id,
+                Title        = post.Content,
+                Excerpt      = post.Excerpt,
+                Content      = post.Content,
+                CategoryId   = post.CategoryId,
+                PostTags     = post.PostTags,
+                CreatedDate  = post.CreatedDate,
                 CommentCount = post.Comments.Count(),
-                ViewCount = post.ViewCount
+                ViewCount    = post.ViewCount
             };
         }
 
@@ -93,15 +93,15 @@ namespace Blog.Infrastructure.Services.Admin
             {
                 Post post = new Post
                 {
-                    Id = viewModel.Id,
-                    Title = viewModel.Title,
-                    Content = viewModel.Content,
-                    Excerpt = viewModel.Excerpt,
-                    CategoryId = viewModel.CategoryId,
+                    Id          = viewModel.Id,
+                    Title       = viewModel.Title,
+                    Content     = viewModel.Content,
+                    Excerpt     = viewModel.Excerpt,
+                    CategoryId  = viewModel.CategoryId,
                     CreatedDate = DateTime.Now,
                     UpdatedDate = DateTime.Now,
                     CreatedById = _userManager.GetUserId(_httpContextAccessor.HttpContext.User),
-                    Slug = CreateSlug(viewModel.Title),
+                    Slug        = CreateSlug(viewModel.Title),
                     IsPublished = false
                 };
 
@@ -116,7 +116,7 @@ namespace Blog.Infrastructure.Services.Admin
             {
                 return new DataResult
                 {
-                    Status = Status.Exception,
+                    Status  = Status.Exception,
                     Message = $"{ex.Message}"
                 };
             }
@@ -130,16 +130,16 @@ namespace Blog.Infrastructure.Services.Admin
 
                 if (post == null) throw new Exception("post doestn't Exist");
 
-                post.Id = viewModel.Id;
-                post.Slug = post.Title.ToLowerInvariant() == viewModel.Title.ToLowerInvariant() ? post.Slug : CreateSlug(viewModel.Title);
-                post.Title = viewModel.Title;
-                post.Content = viewModel.Content;
-                post.Excerpt = viewModel.Excerpt;
-                post.CategoryId = viewModel.CategoryId;
+                post.Id          = viewModel.Id;
+                post.Slug        = post.Title.ToLowerInvariant() == viewModel.Title.ToLowerInvariant() ? post.Slug : CreateSlug(viewModel.Title);
+                post.Title       = viewModel.Title;
+                post.Content     = viewModel.Content;
+                post.Excerpt     = viewModel.Excerpt;
+                post.CategoryId  = viewModel.CategoryId;
                 post.UpdatedDate = DateTime.Now;
                 post.IsPublished = viewModel.IsPublished;
 
-                await _postRepository.DeleteBatch(post.PostTags);
+                await _postRepository.DeleteBatch(post.PostTags.ToList());
 
                 foreach (var tagId in viewModel.TagIds)
                 {
@@ -152,7 +152,7 @@ namespace Blog.Infrastructure.Services.Admin
             {
                 return new DataResult
                 {
-                    Status = Status.Exception,
+                    Status  = Status.Exception,
                     Message = $"{ex.Message}"
                 };
             }
@@ -175,12 +175,12 @@ namespace Blog.Infrastructure.Services.Admin
             return await PaginatedList<PostViewModel>.CreateAsync((from result in _postRepository.GetAllAsync<Post>()
                                                                    select new PostViewModel
                                                                    {
-                                                                       Id = result.Id,
-                                                                       Title = result.Content,
-                                                                       Excerpt = result.Excerpt,
-                                                                       Content = result.Content,
+                                                                       Id         = result.Id,
+                                                                       Title      = result.Content,
+                                                                       Excerpt    = result.Excerpt,
+                                                                       Content    = result.Content,
                                                                        CategoryId = result.CategoryId,
-                                                                       PostTags = result.PostTags
+                                                                       PostTags   = result.PostTags
                                                                    }).AsNoTracking().OrderByDescending(m=>m.CreatedDate), page ?? 1, pageSize ?? 10);
         }
     }

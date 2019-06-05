@@ -18,5 +18,8 @@ namespace Blog.Entities.Models
 
         [NotMapped]
         public int TotalCount { get; set; }
+
+        [NotMapped]
+        public int FilteredCount { get; set; }
     }
 }
