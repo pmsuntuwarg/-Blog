@@ -12,7 +12,7 @@ using Blog.Common.Helpers;
 
 namespace Blog.Infrastructure.Services.Admin
 {
-    public class CategoryService : ICategoryService
+    public class CategoryService: ICategoryService
     {
         private ICategoryRepository _categoryRepository;
         public CategoryService(ICategoryRepository categoryRepository)
@@ -22,10 +22,14 @@ namespace Blog.Infrastructure.Services.Admin
 
         public async Task<DataResult> Delete(string id)
         {
+            if(string.IsNullOrEmpty(id))
+            {
+
+            }
+
             Category category = await _categoryRepository.GetById<Category, string>(id);
 
             return await _categoryRepository.Delete(category);
-
         }
 
         public async Task<IReadOnlyList<CategoryViewModel>> GetAll()
@@ -33,8 +37,8 @@ namespace Blog.Infrastructure.Services.Admin
             return await (from result in _categoryRepository.GetAllAsync<Category>()
                          select new CategoryViewModel
                          {
-                             Id = result.Id,
-                             CategoryName =  result.Name
+                             Id           = result.Id,
+                             CategoryName = result.Name
                          }).ToListAsync();
         }
 
@@ -60,8 +64,8 @@ namespace Blog.Infrastructure.Services.Admin
 
             Category category = new Category
             {
-                Id = viewModel.Id,
-                Name = viewModel.CategoryName,
+                Id          = viewModel.Id,
+                Name        = viewModel.CategoryName,
                 CreatedDate = DateTime.Now,
                 UpdatedDate = DateTime.Now
             };
@@ -80,8 +84,8 @@ namespace Blog.Infrastructure.Services.Admin
 
             Category category = new Category
             {
-                Id = viewModel.Id,
-                Name = viewModel.CategoryName,
+                Id          = viewModel.Id,
+                Name        = viewModel.CategoryName,
                 UpdatedDate = DateTime.Now,
             };
 

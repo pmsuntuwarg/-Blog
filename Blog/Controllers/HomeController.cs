@@ -13,9 +13,9 @@ namespace Blog.Controllers
             _postService = postService;
         }
 
-        public ViewResult Index()
+        public async Task<ViewResult> Index()
         {
-            var posts = _postService.GetAll();
+            var posts = await _postService.GetAll();
 
             return View(posts);
         }
@@ -31,8 +31,8 @@ namespace Blog.Controllers
 
             return View(post);
         }
-        
 
+        // [Route("Page/{pageName}")]
         public async Task<IActionResult> Page(string pageName)
         {
             //if(pageName != null)

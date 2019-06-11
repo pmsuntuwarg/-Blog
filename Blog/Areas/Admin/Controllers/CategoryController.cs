@@ -86,9 +86,9 @@ namespace Blog.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Delete(CategoryViewModel category)
+        public async Task<IActionResult> Delete(string id)
         {
-            await _categoryService.Delete(category.Id);
+            await _categoryService.Delete(id);
 
             return RedirectToAction(nameof(Index));
         }
