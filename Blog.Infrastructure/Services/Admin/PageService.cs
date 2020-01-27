@@ -70,9 +70,9 @@ namespace Blog.Infrastructure.Services.Admin
             throw new Exception("Not found");
         }
 
-        public Page GetPageByPageName(string pageName)
+        public async Task<Page> GetPageByPageName(string pageName)
         {
-            return _pageRespository.GetPageByPageName(pageName);
+            return await _pageRespository.GetPageByPageName(pageName);
         }
 
         public async Task<DataResult> Create(PageViewModel viewModel)
@@ -154,11 +154,11 @@ namespace Blog.Infrastructure.Services.Admin
                 FilteredCount = a.FilteredCount
             }).ToList();
 
-            if (result == null)
-            {
-                // empty collection...
-                return new List<PageViewModel>();
-            }
+            // if (result.Count() == 0)
+            // {
+            //     // empty collection...
+            //     return new List<PageViewModel>();
+            // }
 
             return result;
         }

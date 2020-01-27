@@ -8,7 +8,7 @@ namespace Blog.Infrastructure.Interfaces.Admin
 {
     public interface IPageService : IBaseService<Page, PageViewModel, string>
     {
-        Page GetPageByPageName(string pageName);
+        Task<Page> GetPageByPageName(string pageName);
         Task<List<PageViewModel>> GetPages(DataTableAjaxPostModel model);
     }
 }

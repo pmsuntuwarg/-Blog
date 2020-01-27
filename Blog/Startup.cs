@@ -14,6 +14,10 @@ using Blog.Infrastructure.Extensions;
 using Blog.Infrastructure.Interfaces.IRepositories;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Blog.Common.Helpers;
+using System.Globalization;
+using Microsoft.AspNetCore.Mvc.Razor;
+using System.Collections.Generic;
+using Microsoft.AspNetCore.Localization;
 
 namespace Blog
 {
@@ -30,6 +34,11 @@ namespace Blog
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddLocalization(options =>
+            {
+                    options.ResourcesPath = "../Blog.Common/Resources";
+            });
+
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"))
                 );
@@ -46,8 +55,23 @@ namespace Blog
 
             services.AddHttpContextAccessor();
 
-            services.AddMvc();
-            
+            services.AddMvc()
+                .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
+                .AddDataAnnotationsLocalization();
+
+            services.Configure<RequestLocalizationOptions>(options =>
+            {
+                var supportedCultures = new List<CultureInfo>
+                {
+                    new CultureInfo("en-US"),
+                    new CultureInfo("ne")
+                };
+
+                options.DefaultRequestCulture = new RequestCulture("en-US");
+                options.SupportedCultures = supportedCultures;
+                options.SupportedUICultures = supportedCultures;
+            });
+
             services.AddMiniProfiler(options => {
                 options.RouteBasePath = "/profiler";
             }).AddEntityFramework();
@@ -57,6 +81,19 @@ namespace Blog
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            var supportedCultures = new List<CultureInfo>
+            {
+                new CultureInfo("ne"),
+                new CultureInfo("en-US")
+            };
+
+            app.UseRequestLocalization(new RequestLocalizationOptions
+            {
+                DefaultRequestCulture = new RequestCulture("en-US"),
+                SupportedCultures = supportedCultures,
+                SupportedUICultures = supportedCultures
+            }); 
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

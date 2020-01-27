@@ -22,9 +22,9 @@ namespace Blog.Infrastructure.Repositories.Admin
             _context = context;
         }
 
-        public Page GetPageByPageName(string pageName)
+        public async Task<Page> GetPageByPageName(string pageName)
         {
-            return _context.Pages.FirstOrDefault(p => p.PageName == pageName);
+            return await _context.Pages.FirstOrDefaultAsync(p => p.PageName == pageName);
         }
 
         public List<Page> GetPages(Expression<Func<Page, bool>> whereClause, string searchBy, int take, int skip, string sortBy, bool sortDir)
@@ -59,7 +59,6 @@ namespace Blog.Infrastructure.Repositories.Admin
                            .Skip(skip)
                            .Take(take)
                            .ToList();
-
 
             return result;
         }

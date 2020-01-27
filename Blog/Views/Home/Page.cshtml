@@ -1,9 +1,7 @@
 ﻿
-@if (ViewBag.Content is null)
+@if (ViewBag.Content != null)
 {
-    <span>
-        
-    </span>
+    @Html.Raw(ViewBag.Content)
 } else
 {
     <p>null</p>

@@ -8,9 +8,11 @@ namespace Blog.Controllers
     public class HomeController : Controller
     {
         private readonly IPostService _postService;
-        public HomeController(IPostService postService)
+        private readonly IPageService _pageService;
+        public HomeController(IPostService postService, IPageService pageService)
         {
             _postService = postService;
+            _pageService = pageService;
         }
 
         public async Task<ViewResult> Index()
@@ -35,10 +37,10 @@ namespace Blog.Controllers
         // [Route("Page/{pageName}")]
         public async Task<IActionResult> Page(string pageName)
         {
-            //if(pageName != null)
-            //{
-            //    ViewBag.Content = await _pastService.GetPageByName(pageName);
-            //}
+            if(pageName != null)
+            {
+               ViewBag.Content = (await _pageService.GetPageByPageName(pageName)).Body;
+            }
 
             return View();
         }

@@ -112,8 +112,8 @@ namespace Blog.Areas.Admin.Controllers
             {
                 //thigs to send to datatable - mandatory
                 draw            = model.draw,
-                recordsTotal    = result[0].TotalCount,      // totalResultsCount,
-                recordsFiltered = result[0].FilteredCount,   // filteredResultsCount,
+                recordsTotal    = result.Count != 0 ? result[0].TotalCount : 0,      // totalResultsCount,
+                recordsFiltered = result.Count != 0 ? result[0].FilteredCount : 0,   // filteredResultsCount,
                 data            = result
             });
         }

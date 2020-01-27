@@ -11,7 +11,7 @@ namespace Blog.Infrastructure.Interfaces.Admin
 {
     public interface IPageRepository : IBaseRepository
     {
-        Page GetPageByPageName(string pageName);
+        Task<Page> GetPageByPageName(string pageName);
         List<Page> GetPages(Expression<Func<Page, bool>> whereClause, string searchBy, int take, int skip, string sortBy, bool sortDir);
     }
 }

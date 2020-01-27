@@ -1,7 +1,10 @@
-﻿using System;
+﻿using Blog.Common.Resources;
+using DocumentFormat.OpenXml.Office.CustomUI;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Security.AccessControl;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -17,7 +20,7 @@ namespace Blog.Entities.ViewModels
         public string ParentMenuId { get; set; }
 
         [Required(ErrorMessage = "Menu Icon Class is Required")]
-        [Display(Name = "Menu Icon Class")]
+        [Display(Name = nameof(MenuResource.Menu_Icon_Class), ResourceType = typeof(MenuResource))]
         public string MenuIconClass { get; set; }
 
         [Required]
