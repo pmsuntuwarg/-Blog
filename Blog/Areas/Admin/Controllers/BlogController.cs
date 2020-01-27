@@ -87,6 +87,7 @@ namespace Blog.Areas.Admin.Controllers
             }
         }
 
+        [ActionName("Edit")]
         public async Task<ActionResult> Update(string id)
         {
             PostViewModel post            = await _postService.GetById(id);
@@ -102,6 +103,7 @@ namespace Blog.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [ActionName("Edit")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Update([FromForm]PostViewModel post)
         {

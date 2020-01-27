@@ -4,7 +4,7 @@
     <div class="overlay"></div>
     <div class="container">
       <div class="row">
-        <div class="col-lg-8 col-md-10 mx-auto">
+        <div class="col-lg-8 col-md-10 text-justify">
           <div class="site-heading">
             <h1>Dev/Mahesh</h1>
             <span class="subheading">A Dev Blog By Mahesh</span>
@@ -17,25 +17,24 @@
   <!-- Main Content -->
   <div class="container">
     <div class="row">
-      <div class="col-lg-8 col-md-10 mx-auto">
+      <div class="col-lg-8 col-md-10 text-justify">
        @if(Model != null && Model.Count > 0)
        {
            foreach(var post in Model)
            {
                 <div class="post-preview">
-                    <a href="post.html">
+                    <a asp-controller="Home" asp-action="Post" asp-route-slug="@post.Slug" >
                         <h2 class="post-title">
                             @post.Title
                         </h2>
                         <h3 class="post-subtitle">
-                            Problems look mighty small from 150 miles up
+                            @post.Excerpt
                         </h3>
                     </a>
                     <p class="post-meta">
                         Posted by
-                        <a href="#">Mahesh</a>
-                        <!-- on @post.CreatedDate.ToString("m dd, yyyy") -->
-                        on September 24, 2019
+                        <a href="#">@post.Author</a>
+                        on @post.CreatedDate.ToShortDateString()
                     </p>
                 </div>
                 <hr>
@@ -46,5 +45,8 @@
           <a class="btn btn-primary float-right" href="#">Older Posts &rarr;</a>
         </div>
       </div>
+       <div class="col-lg-4 col-md-2">
+            <partial name="Partials/_BlogSidebarPartial" />
+        </div>
     </div>
   </div>

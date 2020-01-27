@@ -9,6 +9,7 @@ namespace Blog.Infrastructure.Extensions
             app.UseMvc(routes => {
                 routes.MapRoute("area", "{area:exists}/{controller=Dashboard}/{action=index}/{id?}");
                 routes.MapRoute("page", "{controller=Dashboard}/{action=Page}/{pageName}");
+                // routes.MapRoute("post", "{controller=Home}/{action=Post}/{slug}");
                 routes.MapRoute("default", "{controller=Home}/{action=index}/{id?}");
             });
 

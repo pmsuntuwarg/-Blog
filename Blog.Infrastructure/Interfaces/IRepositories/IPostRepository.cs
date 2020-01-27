@@ -8,5 +8,6 @@ namespace Blog.Infrastructure.Interfaces.Admin
     {
         IEnumerable<Post> RecentPosts(int takeTotal);
         Task<Post> GetById(string postId);
+        Task<Post> GetBySlug(string slug);
     }
 }

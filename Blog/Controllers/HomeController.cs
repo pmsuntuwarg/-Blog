@@ -22,9 +22,10 @@ namespace Blog.Controllers
             return View(posts);
         }
 
-        public async Task<IActionResult> Detail(string id)
+        [Route("Post/{slug}")]
+        public async Task<IActionResult> Post(string slug)
         {
-            PostViewModel post = await _postService.GetById(id);
+            PostViewModel post = await _postService.GetBySlug(slug);
 
             if (post == null)
                 return NotFound("Post not found");

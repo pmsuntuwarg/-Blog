@@ -20,6 +20,7 @@ namespace Blog.Entities.ViewModels
 
         [Required]
         public string Excerpt { get; set; }
+        public string Slug { get; set; }
 
         [Required]
         public string Content { get; set; }
@@ -39,6 +40,7 @@ namespace Blog.Entities.ViewModels
         public DateTime CreatedDate { get; set; }
         public long ViewCount { get; set; }
         public int CommentCount { get; set; }
+        public string Author { get; set; }
 
         public IList<PostTag> PostTags { get; set; } 
         public IReadOnlyList<CategoryViewModel> Categories { get; set; } 

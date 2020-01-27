@@ -22,7 +22,7 @@
                     </div>
                     <div>
                         <a data-toggle="modal" data-target="#publish-post-modal" href="javascript:;" class="btn btn-blue mr-2">Publish</a>
-                        <a asp-action="update" asp-route-id="@Model.Id" class="btn btn-success mr-2">Edit</a>
+                        <a asp-action="delete" asp-route-id="@Model.Id" class="btn btn-success mr-2">Edit</a>
                         <a data-toggle="modal" data-target="#delete-post-modal" href="javascript:;" class="btn btn-danger mr-2">Delete</a>
                         <partial name="_PublishPostModalPartial" model="new PostViewModel{ Id = Model.Id }" />
                         <partial name="_DeletePostModalPartial" model="new PostViewModel { Id=Model.Id, Title=Model.Title, Excerpt=Model.Excerpt }"/>

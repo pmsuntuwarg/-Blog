@@ -23,6 +23,7 @@ namespace Blog.Infrastructure.Repositories.Admin
             var whereQuery = _context.Posts.Where(p => p.Content.Contains(query) || p.Excerpt.Contains(query)|| p.Title.Contains(query))
                 .Include(p => p.Category)
                 .Include(p => p.Comments)
+                .Include(p => p.CreatedBy)
                 .Include(p => p.PostTags).ThenInclude(pt => pt.Tag);
 
             PagedList<Post> posts = new PagedList<Post>(whereQuery, pageNumber, pageSize);
@@ -39,16 +40,27 @@ namespace Blog.Infrastructure.Repositories.Admin
 
         public async Task<Post> GetById(string postId)
         {
-            var a = await _context.Posts
+            var post = await _context.Posts
                 .Include(p => p.Comments)
                 .Include( p => p.Category)
+                .Include( p => p.CreatedBy)
                 .Include(p => p.PostTags)
                 .ThenInclude(pt => pt.Tag)
                 .FirstOrDefaultAsync(p => p.Id == postId);
 
-            return a;
+            return post;
         }
+        public async Task<Post> GetBySlug(string slug)
+        {
+            var post = await _context.Posts
+                .Include(p => p.Comments)
+                .Include( p => p.Category)
+                .Include( p => p.CreatedBy)
+                .Include(p => p.PostTags)
+                .ThenInclude(pt => pt.Tag)
+                .FirstOrDefaultAsync(p => p.Slug.ToLower() == slug.ToLower());
 
-
+            return post;
+        }
     }
 }

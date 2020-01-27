@@ -51,14 +51,17 @@ namespace Blog.Infrastructure.Services.Admin
                           select new PostViewModel
                           {
                               Id           = result.Id,
-                              Title        = result.Content,
+                              Title        = result.Title,
                               Excerpt      = result.Excerpt,
+                              Slug      = result.Slug,
                               Content      = result.Content,
                               CategoryId   = result.CategoryId,
                               PostTags     = result.PostTags,
                               CommentCount = result.Comments.Count(),
-                              ViewCount    = result.ViewCount
-                          }).ToListAsync();
+                              ViewCount    = result.ViewCount,
+                              CreatedDate    = result.CreatedDate,
+                              Author    = result.CreatedBy.FullName
+                          }).OrderByDescending(m=>m.CreatedDate).ToListAsync();
         }
 
         public async Task<PostViewModel> GetById(string postId)
@@ -68,14 +71,35 @@ namespace Blog.Infrastructure.Services.Admin
             return new PostViewModel
             {
                 Id           = post.Id,
-                Title        = post.Content,
+                Title        = post.Title,
                 Excerpt      = post.Excerpt,
+                Slug         = post.Slug,
                 Content      = post.Content,
                 CategoryId   = post.CategoryId,
                 PostTags     = post.PostTags,
                 CreatedDate  = post.CreatedDate,
                 CommentCount = post.Comments.Count(),
-                ViewCount    = post.ViewCount
+                ViewCount    = post.ViewCount,
+                Author    = post.CreatedBy.FullName
+            };
+        }
+        public async Task<PostViewModel> GetBySlug(string slug)
+        {
+            Post post = await _postRepository.GetBySlug(slug);
+
+            return new PostViewModel
+            {
+                Id           = post.Id,
+                Title        = post.Title,
+                Excerpt      = post.Excerpt,
+                Slug         = post.Slug,
+                Content      = post.Content,
+                CategoryId   = post.CategoryId,
+                PostTags     = post.PostTags,
+                CreatedDate  = post.CreatedDate,
+                CommentCount = post.Comments.Count(),
+                ViewCount    = post.ViewCount,
+                Author    = post.CreatedBy.FullName
             };
         }
 
@@ -160,7 +184,7 @@ namespace Blog.Infrastructure.Services.Admin
 
         private string CreateSlug(string title)
         {
-            var slug = title.ToLowerInvariant().Replace(" ", "-");
+            var slug = title.ToLowerInvariant().Trim().Replace(" ", "-");
             return slug;
         }
 
@@ -175,12 +199,14 @@ namespace Blog.Infrastructure.Services.Admin
             return await PaginatedList<PostViewModel>.CreateAsync((from result in _postRepository.GetAllAsync<Post>()
                                                                    select new PostViewModel
                                                                    {
-                                                                       Id         = result.Id,
-                                                                       Title      = result.Content,
-                                                                       Excerpt    = result.Excerpt,
-                                                                       Content    = result.Content,
-                                                                       CategoryId = result.CategoryId,
-                                                                       PostTags   = result.PostTags
+                                                                       Id          = result.Id,
+                                                                       Title       = result.Title,
+                                                                       Excerpt     = result.Excerpt,
+                                                                       Slug        = result.Slug,
+                                                                       Content     = result.Content,
+                                                                       CategoryId  = result.CategoryId,
+                                                                       PostTags    = result.PostTags,
+                                                                       CreatedDate = result.CreatedDate,
                                                                    }).AsNoTracking().OrderByDescending(m=>m.CreatedDate), page ?? 1, pageSize ?? 10);
         }
     }
