@@ -2,7 +2,6 @@
 using Blog.Infrastructure.Interfaces.Admin;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -35,7 +34,7 @@ namespace Blog.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Tag tag)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 await _tagService.Create(tag);
 
@@ -49,7 +48,7 @@ namespace Blog.Areas.Admin.Controllers
         {
             Tag tag = await _tagService.GetById(id);
 
-            if(!string.IsNullOrEmpty(id))
+            if (!string.IsNullOrEmpty(id))
             {
                 return View("Edit", tag);
             }
@@ -61,7 +60,7 @@ namespace Blog.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Update(Tag tag)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 await _tagService.Update(tag);
 
@@ -85,7 +84,8 @@ namespace Blog.Areas.Admin.Controllers
             try
             {
                 _tagService.Delete(tag.Id);
-            } catch
+            }
+            catch
             {
                 ViewBag.Error = "Some error occured please try again later.";
             }

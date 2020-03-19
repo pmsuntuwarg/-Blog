@@ -1,14 +1,13 @@
 ﻿using Blog.Entities.Models;
 using Blog.Entities.ViewModels;
+using Blog.Entities.ViewModels.DataTable;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Blog.Infrastructure.Interfaces.Admin
 {
-    public interface IPostService : IBaseService<Post, PostViewModel, string>
+    public interface IMediaService : IBaseService<Media, MediaViewModel, string>
     {
-        void IncreaseViewCount(PostViewModel post);
-        int GetCountByCategory(string categoryId);
-        Task<PostViewModel> GetBySlug(string slug);
+        Task<List<MediaViewModel>> GetMedias(DataTableAjaxModel model);
     }
 }

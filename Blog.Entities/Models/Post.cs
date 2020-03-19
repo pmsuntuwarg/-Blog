@@ -1,5 +1,4 @@
-﻿using Blog.Entities.Models.Identity;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -15,10 +14,14 @@ namespace Blog.Entities.Models
         public DateTime PublishedAt { get; set; }
         public bool IsPublished { get; set; } = false;
         public long ViewCount { get; set; }
+        public string TitleImageId { get; set; }
         public string CategoryId { get; set; }
 
         [ForeignKey("CategoryId")]
         public Category Category { get; set; }
+
+        [ForeignKey("TitleImageId")]
+        public Media Media { get; set; }
 
         public IEnumerable<Comment> Comments { get; set; }
         public IList<PostTag> PostTags { get; set; } = new List<PostTag>();

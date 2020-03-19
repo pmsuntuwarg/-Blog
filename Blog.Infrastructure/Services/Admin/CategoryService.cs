@@ -1,18 +1,17 @@
-﻿using System;
+﻿using Blog.Common.Helpers;
+using Blog.Entities;
+using Blog.Entities.Models;
+using Blog.Entities.ViewModels;
+using Blog.Infrastructure.Interfaces.Admin;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Blog.Entities.Models;
-using Blog.Entities;
-using Blog.Entities.ViewModels;
-using Blog.Infrastructure.Interfaces;
-using Blog.Infrastructure.Interfaces.Admin;
-using Microsoft.EntityFrameworkCore;
-using Blog.Common.Helpers;
 
 namespace Blog.Infrastructure.Services.Admin
 {
-    public class CategoryService: ICategoryService
+    public class CategoryService : ICategoryService
     {
         private ICategoryRepository _categoryRepository;
         public CategoryService(ICategoryRepository categoryRepository)
@@ -22,7 +21,7 @@ namespace Blog.Infrastructure.Services.Admin
 
         public async Task<DataResult> Delete(string id)
         {
-            if(string.IsNullOrEmpty(id))
+            if (string.IsNullOrEmpty(id))
             {
 
             }
@@ -32,14 +31,14 @@ namespace Blog.Infrastructure.Services.Admin
             return await _categoryRepository.Delete(category);
         }
 
-        public async Task<IReadOnlyList<CategoryViewModel>> GetAll()
+        public async Task<IReadOnlyList<CategoryViewModel>> GetAll(string searchQuery)
         {
             return await (from result in _categoryRepository.GetAllAsync<Category>()
-                         select new CategoryViewModel
-                         {
-                             Id           = result.Id,
-                             CategoryName = result.Name
-                         }).ToListAsync();
+                          select new CategoryViewModel
+                          {
+                              Id = result.Id,
+                              CategoryName = result.Name
+                          }).ToListAsync();
         }
 
         public async Task<CategoryViewModel> GetById(string categoryId)
@@ -64,8 +63,8 @@ namespace Blog.Infrastructure.Services.Admin
 
             Category category = new Category
             {
-                Id          = viewModel.Id,
-                Name        = viewModel.CategoryName,
+                Id = viewModel.Id,
+                Name = viewModel.CategoryName,
                 CreatedDate = DateTime.Now,
                 UpdatedDate = DateTime.Now
             };
@@ -84,8 +83,8 @@ namespace Blog.Infrastructure.Services.Admin
 
             Category category = new Category
             {
-                Id          = viewModel.Id,
-                Name        = viewModel.CategoryName,
+                Id = viewModel.Id,
+                Name = viewModel.CategoryName,
                 UpdatedDate = DateTime.Now,
             };
 

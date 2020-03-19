@@ -1,0 +1,60 @@
+﻿@model MediaViewModel
+
+<div class="page-heading">
+    <h1 class="page-title">New Media</h1>
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a asp-action="Index">Media</a>
+        </li>
+        @if (Model != null && Model.Id != null)
+        {
+            <li class="breadcrumb-item"> <a asp-action="update">Edit</a> </li>
+        }
+        else
+        {
+            <li class="breadcrumb-item"> <a asp-action="create">Create</a> </li>
+        }
+    </ol>
+</div>
+<div class="page-content fade-in-up">
+    <div class="ibox">
+        <div class="ibox-body">
+            <form asp-action="@ViewContext.RouteData.Values["action"]" asp-antiforgery="true" class="form-horizontal" method="post" novalidate="novalidate" enctype="multipart/form-data">
+                @if (Model != null && Model.Id != null)
+                {
+                    <input asp-for="Id" hidden />
+                }
+
+                <div class="form-group row @(ViewData.ModelState["FileName"] != null? "has-error" : "")">
+                    <label asp-for="FileName" class="col-sm-2 col-form-label"></label>
+                    <div class="col-sm-10">
+                        <input class="form-control" asp-for="FileName" />
+                        <span asp-validation-for="FileName" class="help-block"></span>
+                    </div>
+                </div>
+                <div class="form-group row @(ViewData.ModelState["UploadedFile"] != null? "has-error" : "")">
+                    <label asp-for="UploadedFile" class="col-sm-2 col-form-label"></label>
+                    <div class="col-sm-10">
+                        <input class="form-control" asp-for="UploadedFile" />
+                        <span asp-validation-for="UploadedFile" class="help-block"></span>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-sm-10 ml-sm-auto">
+                        <button class="btn btn-primary" type="submit">Save</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@if (ViewData.ModelState.IsValid)
+{
+
+}
+
+@section JS {
+    <link href="~/assets/vendors/select2/dist/js/select2.full.min.js" rel="stylesheet" />
+}

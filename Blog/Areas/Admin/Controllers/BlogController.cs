@@ -1,5 +1,4 @@
-﻿using Blog.Common.Helpers;
-using Blog.Entities;
+﻿using Blog.Entities;
 using Blog.Entities.Models;
 using Blog.Entities.ViewModels;
 using Blog.Infrastructure.Interfaces.Admin;
@@ -11,16 +10,16 @@ namespace Blog.Areas.Admin.Controllers
 {
     [Area("admin")]
     [Authorize]
-    public class BlogController: Controller
+    public class BlogController : Controller
     {
         private readonly IPostService _postService;
         private readonly ICategoryService _categoryService;
         private readonly ITagService _tagService;
         public BlogController(IPostService postService, ICategoryService categoryService, ITagService tagService)
         {
-            _postService     = postService;
+            _postService = postService;
             _categoryService = categoryService;
-            _tagService      = tagService;
+            _tagService = tagService;
         }
 
         public async Task<IActionResult> Index(int? page)
@@ -35,7 +34,7 @@ namespace Blog.Areas.Admin.Controllers
             PostViewModel model = new PostViewModel
             {
                 CategoryId = string.Empty,
-                Tags       = await _tagService.GetAll(),
+                Tags = await _tagService.GetAll(),
                 Categories = await _categoryService.GetAll()
             };
 
@@ -50,10 +49,10 @@ namespace Blog.Areas.Admin.Controllers
             {
                 DataResult result = await _postService.Create(post);
 
-                return RedirectToAction(nameof(Detail), new { id =  result.ReturnId });
+                return RedirectToAction(nameof(Detail), new { id = result.ReturnId });
             }
 
-            post.Tags       = await _tagService.GetAll();
+            post.Tags = await _tagService.GetAll();
             post.Categories = await _categoryService.GetAll();
 
             return View("Edit", post);
@@ -90,11 +89,11 @@ namespace Blog.Areas.Admin.Controllers
         [ActionName("Edit")]
         public async Task<ActionResult> Update(string id)
         {
-            PostViewModel post            = await _postService.GetById(id);
-                          post.Categories = await _categoryService.GetAll();
-                          post.Tags       = await _tagService.GetAll();
+            PostViewModel post = await _postService.GetById(id);
+            post.Categories = await _categoryService.GetAll();
+            post.Tags = await _tagService.GetAll();
 
-            foreach(PostTag postTag in post.PostTags)
+            foreach (PostTag postTag in post.PostTags)
             {
                 post.TagIds.Add(postTag.TagId);
             }
@@ -115,7 +114,7 @@ namespace Blog.Areas.Admin.Controllers
             }
 
             post.Categories = await _categoryService.GetAll();
-            post.Tags       = await  _tagService.GetAll();
+            post.Tags = await _tagService.GetAll();
 
             return View("Edit", post);
         }

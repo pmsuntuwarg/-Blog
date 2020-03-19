@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Blog.Entities.ViewModels;
+using Blog.Infrastructure.Interfaces.Admin;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Blog.Infrastructure.Interfaces.Admin;
-using Blog.Entities.ViewModels;
+using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
-using Blog.Entities.Models;
 
 namespace Blog.Areas.Admin.Controllers
 {
@@ -21,7 +20,7 @@ namespace Blog.Areas.Admin.Controllers
 
         public async Task<IActionResult> Index()
         {
-            IEnumerable<CategoryViewModel> categories =  await _categoryService.GetAll();
+            IEnumerable<CategoryViewModel> categories = await _categoryService.GetAll();
 
             return View(categories);
         }
@@ -40,7 +39,8 @@ namespace Blog.Areas.Admin.Controllers
                 await _categoryService.Create(category);
 
                 return RedirectToAction(nameof(Index));
-            } catch (Exception e)
+            }
+            catch (Exception e)
             {
             }
 
@@ -52,12 +52,12 @@ namespace Blog.Areas.Admin.Controllers
             CategoryViewModel category = await _categoryService.GetById(categoryId);
             return View(category);
         }
-        
+
         public async Task<IActionResult> Update(string id)
         {
             CategoryViewModel category = await _categoryService.GetById(id);
 
-            if(category == null)
+            if (category == null)
             {
                 ViewBag.Error = "Category Doesn't Exist!!";
 
@@ -66,7 +66,7 @@ namespace Blog.Areas.Admin.Controllers
 
             return View("Edit", category);
         }
-        
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Update(CategoryViewModel category)
@@ -76,7 +76,8 @@ namespace Blog.Areas.Admin.Controllers
                 await _categoryService.Create(category);
 
                 return RedirectToAction(nameof(Index));
-            } catch(Exception e)
+            }
+            catch (Exception e)
             {
                 ModelState.AddModelError("CategoryName", e.Message);
             }

@@ -1,12 +1,13 @@
-﻿using Blog.Entities.Models.Identity;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-
-namespace Blog.Entities.Models
+﻿namespace Blog.Entities.Models
 {
     public class Media : BaseModel
     {
-        
+        public string FileName { get; set; }
+
+        public string FileType { get; set; }
+
+        public string FileUrl { get; set; }
+
+        public string PreviewUrl { get; set; }
     }
 }

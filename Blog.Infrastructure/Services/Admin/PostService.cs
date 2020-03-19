@@ -1,18 +1,17 @@
 ﻿using Blog.Common.Enums;
-using Blog.Entities.Models;
-using Blog.Entities.ViewModels;
+using Blog.Common.Helpers;
 using Blog.Entities;
-using Blog.Infrastructure.Interfaces;
+using Blog.Entities.Models;
+using Blog.Entities.Models.Identity;
+using Blog.Entities.ViewModels;
 using Blog.Infrastructure.Interfaces.Admin;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Blog.Common.Helpers;
-using Microsoft.AspNetCore.Identity;
-using Blog.Entities.Models.Identity;
-using Microsoft.AspNetCore.Http;
 
 namespace Blog.Infrastructure.Services.Admin
 {
@@ -45,23 +44,29 @@ namespace Blog.Infrastructure.Services.Admin
             };
         }
 
-        public async Task<IReadOnlyList<PostViewModel>> GetAll()
+        public async Task<IReadOnlyList<PostViewModel>> GetAll(string searchQuery)
         {
-            return await (from result in _postRepository.GetAllAsync<Post>()
+                searchQuery   = searchQuery?.ToLowerInvariant();
+            var allPostsQuery = _postRepository.GetAllAsync<Post>();
+
+            if (!string.IsNullOrEmpty(searchQuery?.Trim()))
+                allPostsQuery = allPostsQuery.Where(x => x.Title.ToLowerInvariant().Contains(searchQuery) || x.Content.ToLowerInvariant().Contains(searchQuery));
+
+            return await (from result in allPostsQuery
                           select new PostViewModel
                           {
                               Id           = result.Id,
                               Title        = result.Title,
                               Excerpt      = result.Excerpt,
-                              Slug      = result.Slug,
+                              Slug         = result.Slug,
                               Content      = result.Content,
                               CategoryId   = result.CategoryId,
                               PostTags     = result.PostTags,
                               CommentCount = result.Comments.Count(),
                               ViewCount    = result.ViewCount,
-                              CreatedDate    = result.CreatedDate,
-                              Author    = result.CreatedBy.FullName
-                          }).OrderByDescending(m=>m.CreatedDate).ToListAsync();
+                              CreatedDate  = result.CreatedDate,
+                              Author       = result.CreatedBy.FullName
+                          }).OrderByDescending(m => m.CreatedDate).ToListAsync();
         }
 
         public async Task<PostViewModel> GetById(string postId)
@@ -80,7 +85,7 @@ namespace Blog.Infrastructure.Services.Admin
                 CreatedDate  = post.CreatedDate,
                 CommentCount = post.Comments.Count(),
                 ViewCount    = post.ViewCount,
-                Author    = post.CreatedBy.FullName
+                Author       = post.CreatedBy.FullName
             };
         }
         public async Task<PostViewModel> GetBySlug(string slug)
@@ -99,7 +104,7 @@ namespace Blog.Infrastructure.Services.Admin
                 CreatedDate  = post.CreatedDate,
                 CommentCount = post.Comments.Count(),
                 ViewCount    = post.ViewCount,
-                Author    = post.CreatedBy.FullName
+                Author       = post.CreatedBy.FullName
             };
         }
 
@@ -207,7 +212,7 @@ namespace Blog.Infrastructure.Services.Admin
                                                                        CategoryId  = result.CategoryId,
                                                                        PostTags    = result.PostTags,
                                                                        CreatedDate = result.CreatedDate,
-                                                                   }).AsNoTracking().OrderByDescending(m=>m.CreatedDate), page ?? 1, pageSize ?? 10);
+                                                                   }).AsNoTracking().OrderByDescending(m => m.CreatedDate), page ?? 1, pageSize ?? 10);
         }
     }
 }

@@ -30,36 +30,47 @@
                 }
 
                 <div class="form-group row">
+                    <label asp-for="TitleImageId" class="col-sm-2 col-form-label"></label>
+                    <div class="col-sm-6">
+                        <input class="form-control" asp-for="TitleImageId">
+                    </div>
+                </div>
+                <div class="form-group row">
                     <label asp-for="Title" class="col-sm-2 col-form-label"></label>
-                    <div class="col-sm-10">
+                    <div class="col-sm-6">
                         <input class="form-control" asp-for="Title">
                     </div>
                 </div>
                 <div class="form-group row">
                     <label asp-for="Excerpt" class="col-sm-2 col-form-label"></label>
-                    <div class="col-sm-10">
+                    <div class="col-sm-6">
                         <input class="form-control" asp-for="Excerpt">
                     </div>
                 </div>
                 <div class="form-group row">
                     <label asp-for="Content" class="col-sm-2 col-form-label"></label>
-                    <div class="col-sm-10">
+                    <div class="col-sm-6">
                         <textarea asp-for="Content" name="Content" data-plugin="summernote" class="form-control summernote" data-air-mode="true"></textarea>
                     </div>
                 </div>
                 <div class="form-group row">
                     <label asp-for="CategoryId" class="col-sm-2 col-form-label"></label>
-                    <div class="col-sm-10">
-
-                        <select asp-for="CategoryId" asp-items="@{new SelectList(Model.Categories, "Id", "CategoryName", selectedValue: Model.CategoryId)}" class="selectpicker show-tick form-control" title="Please select" data-style="btn-solid">
+                    <div class="col-sm-6">
+                        @{
+                            var categorySelectList = new SelectList(Model.Categories, "Id", "CategoryName", selectedValue: Model.CategoryId);
+                        }
+                        <select asp-for="CategoryId" asp-items="@categorySelectList" class="selectpicker show-tick form-control" title="Please select" data-style="btn-solid">
                             <option>Select Category</option>
                         </select>
                     </div>
                 </div>
                 <div class="form-group row">
                     <label asp-for="TagIds" class="col-sm-2 col-form-label"></label>
-                    <div class="col-sm-10">
-                        <select asp-for="TagIds" asp-items="@{new SelectList(Model.Tags, "Id", "Name", Model.TagIds)}" class="form-control select2-tag" multiple></select>
+                    <div class="col-sm-6">
+                        @{
+                            var tagSelectList = new SelectList(Model.Tags, "Id", "Name", Model.TagIds);
+                        }
+                        <select asp-for="TagIds" asp-items="@tagSelectList" class="form-control select2-tag" multiple></select>
                     </div>
                 </div>
 

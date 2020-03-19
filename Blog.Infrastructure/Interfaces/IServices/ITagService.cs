@@ -1,5 +1,4 @@
 ﻿using Blog.Entities.Models;
-using System.Collections.Generic;
 
 namespace Blog.Infrastructure.Interfaces.Admin
 {

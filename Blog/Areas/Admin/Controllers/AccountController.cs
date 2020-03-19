@@ -1,10 +1,8 @@
-﻿using Blog.Common.Helpers;
-using Blog.Entities.Models.Identity;
+﻿using Blog.Entities.Models.Identity;
 using Blog.Entities.ViewModels.Account;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace Blog.Areas.Admin.Controllers
@@ -26,7 +24,7 @@ namespace Blog.Areas.Admin.Controllers
         [AllowAnonymous]
         public ActionResult Login()
         {
-            if(_signInManager.IsSignedIn(User))
+            if (_signInManager.IsSignedIn(User))
             {
                 return RedirectToAction("Index", "Dashboard");
             }
@@ -42,7 +40,7 @@ namespace Blog.Areas.Admin.Controllers
             if (!ModelState.IsValid)
                 return View(loginViewModel);
 
-            var user = await  _userManager.FindByEmailAsync(loginViewModel.Email);
+            var user = await _userManager.FindByEmailAsync(loginViewModel.Email);
 
             if (user != null)
             {
@@ -60,51 +58,52 @@ namespace Blog.Areas.Admin.Controllers
             return View(loginViewModel);
         }
 
-        [Route("/register")]
-        [AllowAnonymous]
-        public ActionResult Register()
-        {
-            if(_signInManager.IsSignedIn(User))
-            {
-                return RedirectToAction("Index", "Dashboard");
-            }
+        // [Route("/register")]
+        // [AllowAnonymous]
+        // public ActionResult Register()
+        // {
+        //     if (_signInManager.IsSignedIn(User))
+        //     {
+        //         return RedirectToAction("Index", "Dashboard");
+        //     }
 
-            return View();
-        }
+        //     return View();
+        // }
 
-        [HttpPost]
-        [AllowAnonymous]
-        [Route("/register")]
-        public async Task<ActionResult> Register(RegisterViewModel registerViewModel)
-        {
-            if (!ModelState.IsValid)
-                return View(registerViewModel);
+        // [HttpPost]
+        // [AllowAnonymous]
+        // [Route("/register")]
+        // public async Task<ActionResult> Register(RegisterViewModel registerViewModel)
+        // {
+        //     if (!ModelState.IsValid)
+        //         return View(registerViewModel);
 
-            var user = await _userManager.FindByEmailAsync(registerViewModel.Email);
-            
-            if(user == null)
-            {
-                var newUser = new ApplicationUser() {
-                    FirstName = registerViewModel.FirstName,
-                    MiddleName = registerViewModel.Email,
-                    LastName = registerViewModel.LastName,
-                    Email = registerViewModel.Email,
-                    UserName = registerViewModel.Username,
-                    EmailConfirmed = true
-                };
-                
-                var result = await _userManager.CreateAsync(newUser, registerViewModel.Password);
+        //     var user = await _userManager.FindByEmailAsync(registerViewModel.Email);
 
-                if(result.Succeeded)
-                {
-                    await _signInManager.SignInAsync(newUser, false);
-                    return RedirectToAction("Index", "Blog"); 
-                }
-            }
+        //     if (user == null)
+        //     {
+        //         var newUser = new ApplicationUser()
+        //         {
+        //             FirstName = registerViewModel.FirstName,
+        //             MiddleName = registerViewModel.Email,
+        //             LastName = registerViewModel.LastName,
+        //             Email = registerViewModel.Email,
+        //             UserName = registerViewModel.Username,
+        //             EmailConfirmed = true
+        //         };
 
-            ModelState.AddModelError("Email", "User already exist with that email");
-            return View(registerViewModel);
-        }
+        //         var result = await _userManager.CreateAsync(newUser, registerViewModel.Password);
+
+        //         if (result.Succeeded)
+        //         {
+        //             await _signInManager.SignInAsync(newUser, false);
+        //             return RedirectToAction("Index", "Blog");
+        //         }
+        //     }
+
+        //     ModelState.AddModelError("Email", "User already exist with that email");
+        //     return View(registerViewModel);
+        // }
 
         [Route("/forgetpassword")]
         [AllowAnonymous]
@@ -119,8 +118,8 @@ namespace Blog.Areas.Admin.Controllers
                 return View(forgetPaswordViewModel);
 
             var user = await _userManager.FindByEmailAsync(forgetPaswordViewModel.Email);
-            
-            if(user != null)
+
+            if (user != null)
             {
                 var reset = await _userManager.GeneratePasswordResetTokenAsync(user);
             }
@@ -148,7 +147,7 @@ namespace Blog.Areas.Admin.Controllers
 
             return View("Login");
         }
-        
+
         [Route("/logout")]
         public async Task<ActionResult> Logout()
         {

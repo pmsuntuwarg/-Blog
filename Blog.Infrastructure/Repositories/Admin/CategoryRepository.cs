@@ -1,10 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Data.Common;
-using System.Linq;
-using Blog.Data;
-using Blog.Data.DbContext;
+﻿using Blog.Data.DbContext;
 using Blog.Entities.Models;
 using Blog.Infrastructure.Interfaces.Admin;
+using System.Linq;
 
 namespace Blog.Infrastructure.Repositories.Admin
 {

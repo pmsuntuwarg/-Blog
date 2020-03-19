@@ -1,17 +1,16 @@
-﻿using System;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Authorization;
-using Blog.Infrastructure.Interfaces.Admin;
-using Blog.Entities.ViewModels;
-using System.Threading.Tasks;
-using System.Collections.Generic;
+﻿using Blog.Entities.ViewModels;
 using Blog.Entities.ViewModels.DataTable;
+using Blog.Infrastructure.Interfaces.Admin;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Threading.Tasks;
 
 namespace Blog.Areas.Admin.Controllers
 {
     [Area("admin")]
     [Authorize]
-    public class PageController: Controller
+    public class PageController : Controller
     {
         private readonly IPageService _pageService;
 
@@ -104,17 +103,17 @@ namespace Blog.Areas.Admin.Controllers
 
         [HttpPost]
         [ResponseCache(Duration = 200)]
-        public async Task<IActionResult> GetPages(DataTableAjaxPostModel model)
+        public async Task<IActionResult> GetPages(DataTableAjaxModel model)
         {
             var result = await _pageService.GetPages(model);
 
             return Json(new
             {
                 //thigs to send to datatable - mandatory
-                draw            = model.draw,
-                recordsTotal    = result.Count != 0 ? result[0].TotalCount : 0,      // totalResultsCount,
+                draw = model.draw,
+                recordsTotal = result.Count != 0 ? result[0].TotalCount : 0,      // totalResultsCount,
                 recordsFiltered = result.Count != 0 ? result[0].FilteredCount : 0,   // filteredResultsCount,
-                data            = result
+                data = result
             });
         }
     }

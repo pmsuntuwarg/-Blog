@@ -9,6 +9,6 @@ namespace Blog.Infrastructure.Interfaces.Admin
     public interface IPageService : IBaseService<Page, PageViewModel, string>
     {
         Task<Page> GetPageByPageName(string pageName);
-        Task<List<PageViewModel>> GetPages(DataTableAjaxPostModel model);
+        Task<List<PageViewModel>> GetPages(DataTableAjaxModel model);
     }
 }

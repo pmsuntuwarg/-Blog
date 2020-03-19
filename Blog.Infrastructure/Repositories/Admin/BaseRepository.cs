@@ -1,14 +1,12 @@
-﻿using System;
+﻿using Blog.Common.Enums;
+using Blog.Data.DbContext;
+using Blog.Entities;
+using Blog.Infrastructure.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
 using System.Threading.Tasks;
-using Blog.Common.Enums;
-using Blog.Data;
-using Blog.Data.DbContext;
-using Blog.Entities;
-using Blog.Infrastructure.Interfaces;
-using Microsoft.EntityFrameworkCore;
 
 namespace Blog.Infrastructure.Repositories.Admin
 {

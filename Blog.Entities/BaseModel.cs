@@ -1,12 +1,7 @@
-﻿using Blog.Entities.Models;
-using Blog.Entities.Models.Identity;
+﻿using Blog.Entities.Models.Identity;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Blog.Entities
 {
@@ -27,5 +22,11 @@ namespace Blog.Entities
 
         [ForeignKey("UpdatedById")]
         public ApplicationUser UpdatedBy { get; set; }
+
+        [NotMapped]
+        public int TotalCount { get; set; }
+
+        [NotMapped]
+        public int FilteredCount { get; set; }
     }
 }

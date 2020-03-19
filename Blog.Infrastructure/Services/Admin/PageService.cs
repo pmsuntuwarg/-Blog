@@ -1,20 +1,20 @@
 ﻿using Blog.Common.Enums;
+using Blog.Common.Helpers;
+using Blog.Entities;
 using Blog.Entities.Models;
 using Blog.Entities.ViewModels;
-using Blog.Entities;
+using Blog.Entities.ViewModels.DataTable;
 using Blog.Infrastructure.Interfaces.Admin;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using Blog.Common.Helpers;
-using Blog.Entities.ViewModels.DataTable;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace Blog.Infrastructure.Services.Admin
 {
-    public class PageService: IPageService
+    public class PageService : IPageService
     {
         private readonly IPageRepository _pageRespository;
 
@@ -34,20 +34,20 @@ namespace Blog.Infrastructure.Services.Admin
 
             return new DataResult
             {
-                Status  = Status.Failed,
+                Status = Status.Failed,
                 Message = "Cannot delete"
             };
 
         }
 
-        public async Task<IReadOnlyList<PageViewModel>> GetAll()
+        public async Task<IReadOnlyList<PageViewModel>> GetAll(string searchQuery)
         {
             return await (from result in _pageRespository.GetAllAsync<Page>()
                           select new PageViewModel
                           {
-                              Id       = result.Id,
-                              Title    = result.Title,
-                              Body     = result.Body,
+                              Id = result.Id,
+                              Title = result.Title,
+                              Body = result.Body,
                               PageName = result.PageName
                           }).ToListAsync();
         }
@@ -60,10 +60,10 @@ namespace Blog.Infrastructure.Services.Admin
             {
                 return new PageViewModel
                 {
-                    Id       = result.Id,
+                    Id = result.Id,
                     PageName = result.PageName,
-                    Title    = result.Title,
-                    Body     = result.Body
+                    Title = result.Title,
+                    Body = result.Body
                 };
             }
 
@@ -79,13 +79,13 @@ namespace Blog.Infrastructure.Services.Admin
         {
             Page page = new Page
             {
-                Title       = viewModel.Title,
-                PageName    = viewModel.PageName,
-                Body        = viewModel.Body,
-                PageSlug    = CreateSlug(viewModel.PageName),
+                Title = viewModel.Title,
+                PageName = viewModel.PageName,
+                Body = viewModel.Body,
+                PageSlug = CreateSlug(viewModel.PageName),
                 CreatedDate = DateTime.UtcNow,
                 IsPublished = false,
-                IsDraft     = true
+                IsDraft = true
             };
 
             return await _pageRespository.Create(page);
@@ -95,11 +95,11 @@ namespace Blog.Infrastructure.Services.Admin
         {
             Page page = new Page
             {
-                Id          = viewModel.Id,
-                Title       = viewModel.Title,
-                PageName    = viewModel.PageName,
-                Body        = viewModel.Body,
-                PageSlug    = CreateSlug(viewModel.PageName),
+                Id = viewModel.Id,
+                Title = viewModel.Title,
+                PageName = viewModel.PageName,
+                Body = viewModel.Body,
+                PageSlug = CreateSlug(viewModel.PageName),
                 UpdatedDate = DateTime.UtcNow
             };
 
@@ -118,41 +118,41 @@ namespace Blog.Infrastructure.Services.Admin
             throw new NotImplementedException();
         }
 
-        public async Task<List<PageViewModel>> GetPages(DataTableAjaxPostModel model)
+        public async Task<List<PageViewModel>> GetPages(DataTableAjaxModel model)
         {
             var searchBy = (model.search != null) ? model.search.value : null;
-            var take     = model.length;
-            var skip     = model.start;
+            var take = model.length;
+            var skip = model.start;
 
-            string sortBy  = "";
-            bool   sortDir = true;
+            string sortBy = "";
+            bool sortDir = true;
 
             if (model.order != null)
             {
                 // in this example we just default sort on the 1st column
-                sortBy  = model.columns[model.order[0].column].data;
+                sortBy = model.columns[model.order[0].column].data;
                 sortDir = model.order[0].dir.ToLower() == "asc";
             }
 
             if (string.IsNullOrEmpty(searchBy))
             {
                 // if we have an empty search then just order the results by Id ascending
-                sortBy  = "Id";
+                sortBy = "Id";
                 sortDir = true;
             }
 
             var whereClause = BuildDynamicWhereClause(searchBy);
             // search the dbase taking into consideration table sorting and paging
             List<PageViewModel> result = (from a in _pageRespository.GetPages(whereClause, searchBy, take, skip, sortBy, sortDir)
-            select new PageViewModel
-            {
-                Id            = a.Id,
-                Body          = a.Body,
-                PageName      = a.PageName,
-                Title         = a.Title,    
-                TotalCount    = a.TotalCount,
-                FilteredCount = a.FilteredCount
-            }).ToList();
+                                          select new PageViewModel
+                                          {
+                                              Id = a.Id,
+                                              Body = a.Body,
+                                              PageName = a.PageName,
+                                              Title = a.Title,
+                                              TotalCount = a.TotalCount,
+                                              FilteredCount = a.FilteredCount
+                                          }).ToList();
 
             // if (result.Count() == 0)
             // {

@@ -1,6 +1,5 @@
 ﻿using Blog.Entities.Models;
 using Blog.Entities.ViewModels;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Blog.Infrastructure.Interfaces.Admin

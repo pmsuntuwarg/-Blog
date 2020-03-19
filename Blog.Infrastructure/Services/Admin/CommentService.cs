@@ -1,14 +1,13 @@
-﻿using System;
+﻿using Blog.Common.Helpers;
+using Blog.Entities;
+using Blog.Entities.Models;
+using Blog.Entities.ViewModels;
+using Blog.Infrastructure.Interfaces.Admin;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Blog.Common.Enums;
-using Blog.Entities.Models;
-using Blog.Entities.ViewModels;
-using Blog.Entities;
-using Blog.Infrastructure.Interfaces.Admin;
-using Microsoft.EntityFrameworkCore;
-using Blog.Common.Helpers;
 
 namespace Blog.Infrastructure.Services.Admin
 {
@@ -37,24 +36,24 @@ namespace Blog.Infrastructure.Services.Admin
 
         public Task<DataResult> Create(CommentViewModel viewModel)
         {
-                Comment comment = new Comment();
-                comment.Content = viewModel.Content;
-                comment.PostId = viewModel.PostId;
+            Comment comment = new Comment();
+            comment.Content = viewModel.Content;
+            comment.PostId = viewModel.PostId;
 
-                return _commentRepository.Create(comment);
-            
+            return _commentRepository.Create(comment);
+
         }
 
-        public async Task<IReadOnlyList<CommentViewModel>> GetAll()
+        public async Task<IReadOnlyList<CommentViewModel>> GetAll(string searchQuery)
         {
             return await (from result in _commentRepository.GetAllAsync<Comment>()
-                         select new CommentViewModel
-                         {
-                             Id = result.Id,
-                             Content = result.Content,
-                             ParentId = result.ParentId,
-                             PostId = result.PostId
-                         }).ToListAsync();
+                          select new CommentViewModel
+                          {
+                              Id = result.Id,
+                              Content = result.Content,
+                              ParentId = result.ParentId,
+                              PostId = result.PostId
+                          }).ToListAsync();
         }
 
         public async Task<CommentViewModel> GetById(string key)

@@ -1,23 +1,20 @@
-﻿using System;
+﻿using Blog.Data.DbContext;
+using Blog.Entities.Models;
+using Blog.Infrastructure.Interfaces.Admin;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
 using System.Threading.Tasks;
-using Blog.Data;
-using Blog.Data.DbContext;
-using Blog.Entities.Models;
-using Blog.Entities.ViewModels;
-using Blog.Infrastructure.Interfaces.Admin;
-using Microsoft.EntityFrameworkCore;
 
 namespace Blog.Infrastructure.Repositories.Admin
 {
-    public class PageRepository: BaseRepository, IPageRepository
+    public class PageRepository : BaseRepository, IPageRepository
     {
         private readonly ApplicationDbContext _context;
 
-        public PageRepository(ApplicationDbContext context): base(context)
+        public PageRepository(ApplicationDbContext context) : base(context)
         {
             _context = context;
         }
@@ -32,7 +29,7 @@ namespace Blog.Infrastructure.Repositories.Admin
             if (string.IsNullOrEmpty(searchBy))
             {
                 // if we have an empty search then just order the results by Id ascending
-                sortBy  = "Id";
+                sortBy = "Id";
                 sortDir = true;
             }
 
@@ -45,14 +42,14 @@ namespace Blog.Infrastructure.Repositories.Admin
                            .Where(whereClause)
                            .Select(m => new Page
                            {
-                               Id            = m.Id,
-                               PageName      = m.PageName,
-                               Title         = m.Title,
-                               IsPublished   = m.IsPublished,
-                               CreatedDate   = m.CreatedDate,
-                               UpdatedDate   = m.UpdatedDate,
-                               IsDraft       = m.IsDraft,
-                               TotalCount    = totalCount,
+                               Id = m.Id,
+                               PageName = m.PageName,
+                               Title = m.Title,
+                               IsPublished = m.IsPublished,
+                               CreatedDate = m.CreatedDate,
+                               UpdatedDate = m.UpdatedDate,
+                               IsDraft = m.IsDraft,
+                               TotalCount = totalCount,
                                FilteredCount = filteredCount
                            })
                            //.OrderBy(sortBy, sortDir) // have to give a default order when skipping .. so use the PK

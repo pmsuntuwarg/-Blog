@@ -1,23 +1,15 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using Blog.Data.DbContext;
+using Blog.Entities.Models.Identity;
+using Blog.Infrastructure.Extensions;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Blog.Data.DbContext;
-using Blog.Entities.Models.Identity;
-using Blog.Infrastructure.Interfaces.Admin;
-using Blog.Infrastructure.Services.Admin;
-using Blog.Infrastructure.Repositories.Admin;
-using Blog.Infrastructure.Extensions;
-using Blog.Infrastructure.Interfaces.IRepositories;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Blog.Common.Helpers;
-using System.Globalization;
-using Microsoft.AspNetCore.Mvc.Razor;
 using System.Collections.Generic;
-using Microsoft.AspNetCore.Localization;
+using System.Globalization;
 
 namespace Blog
 {
@@ -36,7 +28,7 @@ namespace Blog
         {
             services.AddLocalization(options =>
             {
-                    options.ResourcesPath = "../Blog.Common/Resources";
+                options.ResourcesPath = "../Blog.Common/Resources";
             });
 
             services.AddDbContext<ApplicationDbContext>(options =>
@@ -48,14 +40,14 @@ namespace Blog
             // Custom Extension.
             services.DependencyResolver();
 
-            services.ConfigureApplicationCookie(options => 
+            services.ConfigureApplicationCookie(options =>
                 {
                     options.LoginPath = "/login";
                 });
 
             services.AddHttpContextAccessor();
 
-            services.AddMvc()
+            services.AddMvc(o => { o.EnableEndpointRouting = false; })
                 .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
                 .AddDataAnnotationsLocalization();
 
@@ -72,10 +64,10 @@ namespace Blog
                 options.SupportedUICultures = supportedCultures;
             });
 
-            services.AddMiniProfiler(options => {
-                options.RouteBasePath = "/profiler";
-            }).AddEntityFramework();
-            
+            //services.AddMiniProfiler(options => {
+            //    options.RouteBasePath = "/profiler";
+            //}).AddEntityFramework();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -92,19 +84,19 @@ namespace Blog
                 DefaultRequestCulture = new RequestCulture("en-US"),
                 SupportedCultures = supportedCultures,
                 SupportedUICultures = supportedCultures
-            }); 
+            });
 
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
+            //if (env.IsDevelopment())
+            //{
+            app.UseDeveloperExceptionPage();
+            //}
 
             app.UseStatusCodePages();
-            app.UseStaticFiles(); 
+            app.UseStaticFiles();
             app.UseAuthentication();
 
-            app.UseMiniProfiler();
-
+            //app.UseMiniProfiler();
+            app.UseHttpsRedirection();
             app.UseMvcWithCustomizedRoute();
         }
     }

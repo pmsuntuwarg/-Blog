@@ -17,12 +17,14 @@ namespace Blog.Infrastructure.Extensions
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<ITagRepository, TagRepository>();
             services.AddScoped<IPageRepository, PageRepository>();
+            services.AddScoped<IMediaRepository, MediaRepository>();
 
             services.AddScoped<IPostService, PostService>();
             services.AddScoped<ICommentService, CommentService>();
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<ITagService, TagService>();
             services.AddScoped<IPageService, PageService>();
+            services.AddScoped<IMediaService, MediaService>();
         }
     }
 }

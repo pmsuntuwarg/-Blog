@@ -1,5 +1,7 @@
 <div class="text-right">
-    <input type="text" class="form-control" placeholder="Search" />
+    <form method="get" asp-controller="Home" asp-action="Index">
+        <input type="text" name="search" class="form-control" placeholder="Search" />
+    </form>
     <br />
     <div class="list-group">
         <button type="button" class="list-group-item list-group-item-action active">

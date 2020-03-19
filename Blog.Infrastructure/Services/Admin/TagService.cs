@@ -1,15 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Blog.Common.Enums;
-using Blog.Entities.Models;
+﻿using Blog.Common.Enums;
+using Blog.Common.Helpers;
 using Blog.Entities;
+using Blog.Entities.Models;
 using Blog.Infrastructure.Interfaces.Admin;
 using Blog.Infrastructure.Interfaces.IRepositories;
 using Microsoft.EntityFrameworkCore;
-using Blog.Common.Helpers;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Blog.Infrastructure.Services.Admin
 {
@@ -37,7 +35,7 @@ namespace Blog.Infrastructure.Services.Admin
             };
         }
 
-        public async Task<IReadOnlyList<Tag>> GetAll()
+        public async Task<IReadOnlyList<Tag>> GetAll(string searchQuery)
         {
             return await _tagRepository.GetAllAsync<Tag>().ToListAsync();
         }

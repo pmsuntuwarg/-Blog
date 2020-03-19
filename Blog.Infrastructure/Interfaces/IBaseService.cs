@@ -1,9 +1,6 @@
 ﻿using Blog.Common.Helpers;
 using Blog.Entities;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Blog.Infrastructure.Interfaces
@@ -13,7 +10,7 @@ namespace Blog.Infrastructure.Interfaces
         Task<DataResult> Create(TViewModel viewModel);
         Task<DataResult> Update(TViewModel viewModel);
         Task<DataResult> Delete(string id);
-        Task<IReadOnlyList<TViewModel>> GetAll();
+        Task<IReadOnlyList<TViewModel>> GetAll(string searchQuery = "");
         Task<TViewModel> GetById(TKey key);
         Task<PaginatedList<TViewModel>> GetPaginatedList(int? page, int? pageSize);
     }

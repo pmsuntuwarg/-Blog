@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Blog.Entities.ViewModels.Account
 {
@@ -16,7 +11,7 @@ namespace Blog.Entities.ViewModels.Account
         [Required]
         [DataType(DataType.Password)]
         [Display(Name = "Confirm Password")]
-        [Compare("Password",  ErrorMessage = "Password donot match.")]
+        [Compare("Password", ErrorMessage = "Password donot match.")]
         public string ConfirmPassword { get; set; }
     }
 }

@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Blog.Infrastructure.Interfaces.IRepositories
+﻿namespace Blog.Infrastructure.Interfaces.IRepositories
 {
     public interface ITagRepository : IBaseRepository
     {
-        
+
 
     }
 }

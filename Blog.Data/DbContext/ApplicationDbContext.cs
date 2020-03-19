@@ -18,6 +18,7 @@ namespace Blog.Data.DbContext
         public DbSet<Category> Categories { get; set; }
         public DbSet<PostTag> PostTags { get; set; }
         public DbSet<Page> Pages { get; set; }
+        public DbSet<Media> Medias { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

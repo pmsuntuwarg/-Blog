@@ -14,7 +14,7 @@ namespace Blog.Infrastructure.ViewComponents
         }
 
         public async Task<IViewComponentResult> InvokeAsync()
-        { 
+        {
             throw new Exception("Not implemented");
 
             return View();

@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace Blog.Entities.ViewModels.DataTable
 {
-    public class DataTableAjaxPostModel
+    public class DataTableAjaxModel
     {
         // properties are not capital due to json mapping
         public int draw { get; set; }
