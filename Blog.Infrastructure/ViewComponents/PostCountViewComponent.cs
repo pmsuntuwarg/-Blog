@@ -1,4 +1,5 @@
-﻿using Blog.Infrastructure.Interfaces.Admin;
+﻿using Blog.Entities.ViewModels;
+using Blog.Infrastructure.Interfaces.Admin;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
@@ -15,8 +16,6 @@ namespace Blog.Infrastructure.ViewComponents
 
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            throw new Exception("Not implemented");
-
             return View();
         }
     }

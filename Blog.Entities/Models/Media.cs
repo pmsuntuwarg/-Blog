@@ -9,5 +9,7 @@
         public string FileUrl { get; set; }
 
         public string PreviewUrl { get; set; }
+
+        public bool IsHomeImage { get; set; } = false;
     }
 }

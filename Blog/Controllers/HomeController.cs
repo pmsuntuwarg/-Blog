@@ -30,7 +30,7 @@ namespace Blog.Controllers
             if (post == null)
                 return NotFound("Post not found");
 
-            _postService.IncreaseViewCount(post);
+            await _postService.IncreaseViewCount(post);
 
             return View(post);
         }

@@ -23,6 +23,7 @@ namespace Blog.Infrastructure.Repositories.Admin
                 .Include(p => p.Category)
                 .Include(p => p.Comments)
                 .Include(p => p.CreatedBy)
+                .Include(p => p.Media)
                 .Include(p => p.PostTags).ThenInclude(pt => pt.Tag);
 
             PagedList<Post> posts = new PagedList<Post>(whereQuery, pageNumber, pageSize);
@@ -43,6 +44,7 @@ namespace Blog.Infrastructure.Repositories.Admin
                 .Include(p => p.Comments)
                 .Include(p => p.Category)
                 .Include(p => p.CreatedBy)
+                .Include(p => p.Media)
                 .Include(p => p.PostTags)
                 .ThenInclude(pt => pt.Tag)
                 .FirstOrDefaultAsync(p => p.Id == postId);
@@ -55,6 +57,7 @@ namespace Blog.Infrastructure.Repositories.Admin
                 .Include(p => p.Comments)
                 .Include(p => p.Category)
                 .Include(p => p.CreatedBy)
+                .Include(p => p.Media)
                 .Include(p => p.PostTags)
                 .ThenInclude(pt => pt.Tag)
                 .FirstOrDefaultAsync(p => p.Slug.ToLower() == slug.ToLower());

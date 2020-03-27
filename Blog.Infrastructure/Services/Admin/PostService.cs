@@ -44,10 +44,10 @@ namespace Blog.Infrastructure.Services.Admin
             };
         }
 
-        public async Task<IReadOnlyList<PostViewModel>> GetAll(string searchQuery)
+        public async Task<IReadOnlyList<PostViewModel>> GetAllPublished(string searchQuery)
         {
                 searchQuery   = searchQuery?.ToLowerInvariant();
-            var allPostsQuery = _postRepository.GetAllAsync<Post>();
+            var allPostsQuery = _postRepository.GetAllAsync<Post>().Where(p => p.IsPublished);
 
             if (!string.IsNullOrEmpty(searchQuery?.Trim()))
                 allPostsQuery = allPostsQuery.Where(x => x.Title.ToLowerInvariant().Contains(searchQuery) || x.Content.ToLowerInvariant().Contains(searchQuery));
@@ -65,7 +65,34 @@ namespace Blog.Infrastructure.Services.Admin
                               CommentCount = result.Comments.Count(),
                               ViewCount    = result.ViewCount,
                               CreatedDate  = result.CreatedDate,
+                              IsPublished = result.IsPublished,
                               Author       = result.CreatedBy.FullName
+                          }).OrderByDescending(m => m.CreatedDate).ToListAsync();
+        }
+
+        public async Task<IReadOnlyList<PostViewModel>> GetAll(string searchQuery)
+        {
+            searchQuery = searchQuery?.ToLowerInvariant();
+            var allPostsQuery = _postRepository.GetAllAsync<Post>();
+
+            if (!string.IsNullOrEmpty(searchQuery?.Trim()))
+                allPostsQuery = allPostsQuery.Where(x => x.Title.ToLowerInvariant().Contains(searchQuery) || x.Content.ToLowerInvariant().Contains(searchQuery));
+
+            return await (from result in allPostsQuery
+                          select new PostViewModel
+                          {
+                              Id = result.Id,
+                              Title = result.Title,
+                              Excerpt = result.Excerpt,
+                              Slug = result.Slug,
+                              Content = result.Content,
+                              CategoryId = result.CategoryId,
+                              PostTags = result.PostTags,
+                              CommentCount = result.Comments.Count(),
+                              ViewCount = result.ViewCount,
+                              CreatedDate = result.CreatedDate,
+                              IsPublished = result.IsPublished,
+                              Author = result.CreatedBy.FullName
                           }).OrderByDescending(m => m.CreatedDate).ToListAsync();
         }
 
@@ -85,7 +112,10 @@ namespace Blog.Infrastructure.Services.Admin
                 CreatedDate  = post.CreatedDate,
                 CommentCount = post.Comments.Count(),
                 ViewCount    = post.ViewCount,
-                Author       = post.CreatedBy.FullName
+                Author       = post.CreatedBy.FullName,
+                TitleImageUrl = post.Media?.PreviewUrl,
+                TitleImageId = post.TitleImageId,
+                IsPublished = post.IsPublished
             };
         }
         public async Task<PostViewModel> GetBySlug(string slug)
@@ -104,15 +134,32 @@ namespace Blog.Infrastructure.Services.Admin
                 CreatedDate  = post.CreatedDate,
                 CommentCount = post.Comments.Count(),
                 ViewCount    = post.ViewCount,
-                Author       = post.CreatedBy.FullName
+                Author       = post.CreatedBy.FullName,
+                TitleImageUrl = post.Media?.FileUrl,
+                IsPublished = post.IsPublished
             };
         }
 
-        public void IncreaseViewCount(PostViewModel post)
+        public async Task IncreaseViewCount(PostViewModel postViewModel)
         {
-            if (post.IsPublished)
+            try
             {
-                post.ViewCount += 1;
+                if (postViewModel.IsPublished)
+                {
+                    postViewModel.ViewCount += 1;
+                }
+
+                Post post = await _postRepository.GetById(postViewModel.Id);
+
+                post.ViewCount = postViewModel.ViewCount;
+
+                await _postRepository.Update(post);
+
+                return;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
             }
         }
 
@@ -131,7 +178,8 @@ namespace Blog.Infrastructure.Services.Admin
                     UpdatedDate = DateTime.Now,
                     CreatedById = _userManager.GetUserId(_httpContextAccessor.HttpContext.User),
                     Slug        = CreateSlug(viewModel.Title),
-                    IsPublished = false
+                    IsPublished = true,
+                    TitleImageId = viewModel.TitleImageId
                 };
 
                 foreach (var tagId in viewModel.TagIds)
@@ -155,7 +203,7 @@ namespace Blog.Infrastructure.Services.Admin
         {
             try
             {
-                Post post = await _postRepository.GetById(viewModel.Id);
+                Post post = await _postRepository.GetById(viewModel.Id); 
 
                 if (post == null) throw new Exception("post doestn't Exist");
 
@@ -167,6 +215,7 @@ namespace Blog.Infrastructure.Services.Admin
                 post.CategoryId  = viewModel.CategoryId;
                 post.UpdatedDate = DateTime.Now;
                 post.IsPublished = viewModel.IsPublished;
+                post.TitleImageId = viewModel.TitleImageId;
 
                 await _postRepository.DeleteBatch(post.PostTags.ToList());
 
@@ -201,18 +250,47 @@ namespace Blog.Infrastructure.Services.Admin
 
         public async Task<PaginatedList<PostViewModel>> GetPaginatedList(int? page, int? pageSize)
         {
-            return await PaginatedList<PostViewModel>.CreateAsync((from result in _postRepository.GetAllAsync<Post>()
-                                                                   select new PostViewModel
-                                                                   {
-                                                                       Id          = result.Id,
-                                                                       Title       = result.Title,
-                                                                       Excerpt     = result.Excerpt,
-                                                                       Slug        = result.Slug,
-                                                                       Content     = result.Content,
-                                                                       CategoryId  = result.CategoryId,
-                                                                       PostTags    = result.PostTags,
-                                                                       CreatedDate = result.CreatedDate,
-                                                                   }).AsNoTracking().OrderByDescending(m => m.CreatedDate), page ?? 1, pageSize ?? 10);
+            return await PaginatedList<PostViewModel>
+                .CreateAsync((from result in _postRepository.GetAllAsync<Post>()
+                    select new PostViewModel
+                    {
+                        Id          = result.Id,
+                        Title       = result.Title,
+                        Excerpt     = result.Excerpt,
+                        Slug        = result.Slug,
+                        Content     = result.Content,
+                        CategoryId  = result.CategoryId,
+                        PostTags    = result.PostTags,
+                        CreatedDate = result.CreatedDate,
+                    }).AsNoTracking()
+                    .OrderByDescending(m => m.CreatedDate), page ?? 1, pageSize ?? 10);
+        }
+
+        public async Task<IReadOnlyList<PostViewModel>> GetAllPopularPosts(int total = 0)
+        {
+            IOrderedQueryable<Post> allPostsQuery = _postRepository.GetAllAsync<Post>().Where(p => p.IsPublished).OrderByDescending(p => p.ViewCount);
+            if (total > 0)
+                allPostsQuery = (IOrderedQueryable<Post>)allPostsQuery.Take(total);
+
+
+                return await (from result in allPostsQuery
+                          select new PostViewModel
+                          {
+                              Id = result.Id,
+                              Title = result.Title,
+                              Excerpt = result.Excerpt,
+                              Slug = result.Slug,
+                              Content = result.Content,
+                              CategoryId = result.CategoryId,
+                              PostTags = result.PostTags,
+                              CommentCount = result.Comments.Count(),
+                              ViewCount = result.ViewCount,
+                              CreatedDate = result.CreatedDate,
+                              IsPublished = result.IsPublished,
+                              Author = result.CreatedBy.FullName,
+                              TitleImageId = result.TitleImageId,
+                              TitleImageUrl = result.PostTitleImgUrl
+                          }).OrderByDescending(m => m.CreatedDate).ToListAsync();
         }
     }
 }

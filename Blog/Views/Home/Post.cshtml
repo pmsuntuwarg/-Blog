@@ -1,8 +1,8 @@
   @model PostViewModel
 
   <!-- Page Header -->
-  <header class="masthead" style="background-image: url('img/post-bg.jpg')">
-    <div class="overlay"></div>
+  <header class="masthead">
+    <div class="overlay" style="background-image: url('@Model.TitleImageUrl'); background-position:center; filter:blur(5px); opacity:1; background-size:cover;"></div>
     <div class="container">
       <div class="row">
         <div class="col-lg-8 col-md-10 text-justify">
@@ -17,20 +17,17 @@
       </div>
     </div>
   </header>
-
   <!-- Post Content -->
   <article>
     <div class="container">
-      <div class="row">
-        <div class="col-lg-8 col-md-10 text-justify">
-          @Html.Raw(Model.Content)
-@* <partial name="Comment/_CommentFormPartialView" model="@Model.Comments"/> *@
-
-
+        <div class="row">
+            <div class="col-lg-8 col-md-10 text-justify">
+                @Html.Raw(Model.Content)
+                @* <partial name="Comment/_CommentFormPartialView" model="@Model.Comments"/> *@
+            </div>
+            <div class="col-lg-4 col-md-2">
+                <partial name="Partials/_BlogSidebarPartial" />
+            </div>
         </div>
-        <div class="col-lg-4 col-md-2">
-            <partial name="Partials/_BlogSidebarPartial" />
-        </div>
-      </div>
     </div>
   </article>

@@ -17,6 +17,7 @@ namespace Blog.Entities.ViewModels
         public string Title { get; set; }
 
         public string TitleImageId { get; set; }
+        public string TitleImageUrl { get; set; }
 
         [Required]
         public string Excerpt { get; set; }

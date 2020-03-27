@@ -67,8 +67,6 @@ namespace Blog.Areas.Admin.Controllers
                 return NotFound("Post not found");
             }
 
-            _postService.IncreaseViewCount(post);
-
             return View(post);
         }
 

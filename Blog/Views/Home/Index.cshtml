@@ -1,10 +1,13 @@
 ﻿  @model IReadOnlyList<PostViewModel>
+  @inject Blog.Infrastructure.Interfaces.Admin.IMediaService service
+
+
   <!-- Page Header -->
-  <header class="masthead" style="background-image: url('~/clean-blog/img/home-bg.jpg')">
+  <header class="masthead" style='background-image: url("@service.GetHomeImage().Result.Message")'>
     <div class="overlay"></div>
     <div class="container">
       <div class="row">
-        <div class="col-lg-8 col-md-10 text-justify">
+        <div class="col-lg-12 col-md-12 text-justify">
           <div class="site-heading">
             <h1>Dev/Mahesh</h1>
             <span class="subheading">A Dev Blog By Mahesh</span>

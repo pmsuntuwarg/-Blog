@@ -1,0 +1,15 @@
+﻿@model IReadOnlyList<PostViewModel>
+
+    <div class="list-group">
+        <button type="button" class="list-group-item list-group-item-action active">
+            Posts <span> <i class="glyphicon glyphicon-arrow"></i> </span>
+        </button>
+
+        @foreach (PostViewModel post in Model)
+        {
+            <img src="@post.TitleImageUrl" class="text-left"/>
+            
+            <a asp-controller="Home" asp-action="Post" asp-route-slug="@post.Slug" class="list-group-item list-group-item-action btn-sm">@post.Title</a>
+        }
+
+    </div>

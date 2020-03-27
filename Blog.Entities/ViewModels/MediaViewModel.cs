@@ -21,6 +21,9 @@ namespace Blog.Entities.ViewModels
 
         public string FileUrl { get; set; }
         public DateTime CreatedDate { get; set; }
+
+        public Boolean IsHomeImage { get; set; }
+
         public int TotalCount { get; set; }
         public int FilteredCount { get; set; }
     }

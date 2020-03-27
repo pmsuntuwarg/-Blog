@@ -56,8 +56,8 @@ namespace Blog.Infrastructure.Services.Admin
                 if(!Directory.Exists(directory)) Directory.CreateDirectory(directory);
                 if(!Directory.Exists(previewDirectory)) Directory.CreateDirectory(previewDirectory);
 
-                string imageUrl = $"\\files\\{_contextAccesor.HttpContext.User.Identity.Name}\\{DateTime.Now.Year}\\{DateTime.Now.Month}\\{guid.ToString()}{file.FileName}";
-                string previewImageUrl = $"\\files\\{_contextAccesor.HttpContext.User.Identity.Name}\\{DateTime.Now.Year}\\{DateTime.Now.Month}\\preview\\{guid.ToString()}{file.FileName}";
+                string imageUrl = $"/files/{_contextAccesor.HttpContext.User.Identity.Name}/{DateTime.Now.Year}/{DateTime.Now.Month}/{guid.ToString()}{file.FileName}";
+                string previewImageUrl = $"/files/{_contextAccesor.HttpContext.User.Identity.Name}/{DateTime.Now.Year}/{DateTime.Now.Month}/preview/{guid.ToString()}{file.FileName}";
 
                 using (var stream = new FileStream(path, FileMode.Create)) await file.CopyToAsync(stream);
                 
@@ -81,7 +81,9 @@ namespace Blog.Infrastructure.Services.Admin
                     FileName = $"{guid}{file.FileName}",
                     FileUrl  = imageUrl,
                     FileType = file.ContentType,
-                    PreviewUrl = previewImageUrl
+                    PreviewUrl = previewImageUrl,
+                    IsHomeImage = viewModel.IsHomeImage,
+                    CreatedDate = DateTime.Now
                 };
 
                 result = await _mediaRepository.Create(media);
@@ -209,6 +211,13 @@ namespace Blog.Infrastructure.Services.Admin
         public Task<DataResult> Update(MediaViewModel viewModel)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<DataResult> GetHomeImage()
+        {
+            Media media = await _mediaRepository.GetHomeImage();
+
+            return new DataResult { Status = Status.Success, Message=media.FileUrl };
         }
     }
 }

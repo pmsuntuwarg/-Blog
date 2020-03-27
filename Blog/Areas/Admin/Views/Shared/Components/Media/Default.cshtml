@@ -1,34 +1,32 @@
-﻿@model IReadOnlyList<PageViewModel>
+﻿@model PaginatedList<MediaViewModel>
 
 <div class="ibox">
     <div class="ibox-body">
-        <h5 class="font-strong mb-4"></h5>
-        <div class="flexbox mb-4">
-            <div class="flexbox">
-                <span class="mr-4 static-badge badge-pink"><i class="la la-pencil"></i></span>
-                <div>
-                    <h5 class="font-strong">Category</h5>
-                    <div class="text-light">Found <!--Model.Count()--> Media</div>
+        <div class="row">
+            @foreach (var media in Model)
+            {
+                <div class="col-md-4" style="background-image: @media.PreviewUrl">
                 </div>
-                <div class="ml-4">
-                    <a asp-action="Create" class="btn btn-success">Add Media</a>
-                </div>
+            }
+
+            <div class="row mb-5">
+                @{
+                    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+                    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+                }
+
+                <a asp-action="Index"
+                   asp-route-page="@(Model.PageIndex - 1)"
+                   class="btn btn-default @prevDisabled">
+                    Previous
+                </a>
+                <a asp-action="Index"
+                   asp-route-page="@(Model.PageIndex + 1)"
+                   class="btn btn-default @nextDisabled">
+                    Next
+                </a>
             </div>
-            <div class="input-group-icon input-group-icon-left mr-3">
-                <span class="input-icon input-icon-right font-16"><i class="ti-search"></i></span>
-                <input class="form-control form-control-rounded form-control-solid" id="key-search" type="text" placeholder="Search ...">
-            </div>
-        </div>
-        <div class="table-responsive">
-            <table class="table table-bordered table-hover" id="mediaListDT">
-                <thead class="thead-default thead-lg">
-                    <tr>
-                        <th>File Preview </th>
-                        <th>File Name</th>
-                        <th class="no-sort"></th>
-                    </tr>
-                </thead>
-            </table>
+
         </div>
     </div>
 </div>
